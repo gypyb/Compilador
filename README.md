@@ -10,8 +10,10 @@ Este proyecto consiste en desarrollar un compilador usando Flex y Bison para el 
 
 ## Instalación
 1. Clonar el repositorio:
-git clone https://url.del.repositorio.git
+
+git clone https://github.com/gypyb/Compilador.git
 2. Navegar al directorio del proyecto:
+
 cd nombre-del-repositorio
 
 ## Compilación y Ejecución
