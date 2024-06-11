@@ -80,7 +80,20 @@ double comprobarValorNodo(struct ast *n, int contadorEtiquetaLocal)
   //TIPO NODO 22 - Lista de sentencias
   } else if (n->tipoNodo == 7) {
     dato = comprobarValorNodo(n->izq, contadorEtiquetaLocal); 
-    comprobarValorNodo(n->dcha, contadorEtiquetaLocal);   
+    comprobarValorNodo(n->dcha, contadorEtiquetaLocal); 
+
+  //TIPO NODO 4 - MULTIPLICACION  
+  }else if (n->tipoNodo == 8) {
+    dato = comprobarValorNodo(n->izq, contadorEtiquetaLocal) * comprobarValorNodo(n->dcha, contadorEtiquetaLocal);
+    fprintf(yyout, "mul.s $f%d, $f%d, $f%d\n", n->resultado, n->izq->resultado, n->dcha->resultado); //se utiliza mul.s para * en ASM
+    borrarReg(n->izq, n->dcha); //borrado de registros (se ponen a true)
+  
+  //TIPO NODO 5 - Nueva división
+  } else if (n->tipoNodo == 9) {
+    dato = comprobarValorNodo(n->izq, contadorEtiquetaLocal) / comprobarValorNodo(n->dcha, contadorEtiquetaLocal);
+    fprintf(yyout, "div.s $f%d, $f%d, $f%d\n", n->resultado, n->izq->resultado, n->dcha->resultado); //se utiliza div.s para / en ASM
+    borrarReg(n->izq, n->dcha); //borrado de registros (se ponen a true)
+  
   }
   return dato; //Devolvemos el valor
 }

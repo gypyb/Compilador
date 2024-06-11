@@ -122,13 +122,15 @@ char* tipos[] = {"numerico", "numericoDecimal", "texto", "bool"}; //Para parsear
    enum yytokentype {
      SUMA = 258,
      RESTA = 259,
-     IGUAL = 260,
-     APERTURAPARENTESIS = 261,
-     CIERREPARENTESIS = 262,
-     IMPRIMIR = 263,
-     NUMERICO = 264,
-     NUMERICODECIMAL = 265,
-     IDENTIFICADOR = 266
+     MULTIPLICACION = 260,
+     DIVISION = 261,
+     IGUAL = 262,
+     APERTURAPARENTESIS = 263,
+     CIERREPARENTESIS = 264,
+     IMPRIMIR = 265,
+     NUMERICO = 266,
+     NUMERICODECIMAL = 267,
+     IDENTIFICADOR = 268
    };
 #endif
 
@@ -155,7 +157,7 @@ typedef union YYSTYPE
 
 
 /* Line 214 of yacc.c  */
-#line 159 "src/pyBis.c"
+#line 161 "src/pyBis.c"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
@@ -167,7 +169,7 @@ typedef union YYSTYPE
 
 
 /* Line 264 of yacc.c  */
-#line 171 "src/pyBis.c"
+#line 173 "src/pyBis.c"
 
 #ifdef short
 # undef short
@@ -382,20 +384,20 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  10
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   18
+#define YYLAST   23
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  12
+#define YYNTOKENS  14
 /* YYNNTS -- Number of nonterminals.  */
 #define YYNNTS  8
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  14
+#define YYNRULES  16
 /* YYNRULES -- Number of states.  */
-#define YYNSTATES  23
+#define YYNSTATES  27
 
 /* YYTRANSLATE(YYLEX) -- Bison symbol number corresponding to YYLEX.  */
 #define YYUNDEFTOK  2
-#define YYMAXUTOK   266
+#define YYMAXUTOK   268
 
 #define YYTRANSLATE(YYX)						\
   ((unsigned int) (YYX) <= YYMAXUTOK ? yytranslate[YYX] : YYUNDEFTOK)
@@ -429,7 +431,7 @@ static const yytype_uint8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
-       5,     6,     7,     8,     9,    10,    11
+       5,     6,     7,     8,     9,    10,    11,    12,    13
 };
 
 #if YYDEBUG
@@ -438,23 +440,24 @@ static const yytype_uint8 yytranslate[] =
 static const yytype_uint8 yyprhs[] =
 {
        0,     0,     3,     5,     7,    10,    12,    14,    18,    22,
-      26,    28,    30,    32,    34
+      26,    30,    34,    36,    38,    40,    42
 };
 
 /* YYRHS -- A `-1'-separated list of the rules' RHS.  */
 static const yytype_int8 yyrhs[] =
 {
-      13,     0,    -1,    14,    -1,    15,    -1,    14,    15,    -1,
-      16,    -1,    19,    -1,    11,     5,    17,    -1,    17,     3,
-      18,    -1,    17,     4,    18,    -1,    18,    -1,    11,    -1,
-       9,    -1,    10,    -1,     8,     6,    17,     7,    -1
+      15,     0,    -1,    16,    -1,    17,    -1,    16,    17,    -1,
+      18,    -1,    21,    -1,    13,     7,    19,    -1,    19,     3,
+      20,    -1,    19,     4,    20,    -1,    19,     5,    20,    -1,
+      19,     6,    20,    -1,    20,    -1,    13,    -1,    11,    -1,
+      12,    -1,    10,     8,    19,     9,    -1
 };
 
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
        0,    71,    71,    80,    81,    89,    90,    97,   123,   140,
-     156,   167,   186,   194,   206
+     156,   171,   186,   197,   216,   224,   236
 };
 #endif
 
@@ -463,10 +466,11 @@ static const yytype_uint8 yyrline[] =
    First, the terminals, then, starting at YYNTOKENS, nonterminals.  */
 static const char *const yytname[] =
 {
-  "$end", "error", "$undefined", "SUMA", "RESTA", "IGUAL",
-  "APERTURAPARENTESIS", "CIERREPARENTESIS", "IMPRIMIR", "NUMERICO",
-  "NUMERICODECIMAL", "IDENTIFICADOR", "$accept", "codigo", "sentencias",
-  "sentencia", "asignacion", "expresion", "tipos", "imprimir", 0
+  "$end", "error", "$undefined", "SUMA", "RESTA", "MULTIPLICACION",
+  "DIVISION", "IGUAL", "APERTURAPARENTESIS", "CIERREPARENTESIS",
+  "IMPRIMIR", "NUMERICO", "NUMERICODECIMAL", "IDENTIFICADOR", "$accept",
+  "codigo", "sentencias", "sentencia", "asignacion", "expresion", "tipos",
+  "imprimir", 0
 };
 #endif
 
@@ -476,22 +480,22 @@ static const char *const yytname[] =
 static const yytype_uint16 yytoknum[] =
 {
        0,   256,   257,   258,   259,   260,   261,   262,   263,   264,
-     265,   266
+     265,   266,   267,   268
 };
 # endif
 
 /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_uint8 yyr1[] =
 {
-       0,    12,    13,    14,    14,    15,    15,    16,    17,    17,
-      17,    18,    18,    18,    19
+       0,    14,    15,    16,    16,    17,    17,    18,    19,    19,
+      19,    19,    19,    20,    20,    20,    21
 };
 
 /* YYR2[YYN] -- Number of symbols composing right hand side of rule YYN.  */
 static const yytype_uint8 yyr2[] =
 {
        0,     2,     1,     1,     2,     1,     1,     3,     3,     3,
-       1,     1,     1,     1,     4
+       3,     3,     1,     1,     1,     1,     4
 };
 
 /* YYDEFACT[STATE-NAME] -- Default rule to reduce with in state
@@ -500,8 +504,8 @@ static const yytype_uint8 yyr2[] =
 static const yytype_uint8 yydefact[] =
 {
        0,     0,     0,     0,     2,     3,     5,     6,     0,     0,
-       1,     4,    12,    13,    11,     0,    10,     7,     0,     0,
-      14,     8,     9
+       1,     4,    14,    15,    13,     0,    12,     7,     0,     0,
+       0,     0,    16,     8,     9,    10,    11
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
@@ -512,18 +516,18 @@ static const yytype_int8 yydefgoto[] =
 
 /* YYPACT[STATE-NUM] -- Index in YYTABLE of the portion describing
    STATE-NUM.  */
-#define YYPACT_NINF -7
+#define YYPACT_NINF -8
 static const yytype_int8 yypact[] =
 {
-      -6,     0,    10,     3,    -6,    -7,    -7,    -7,    -2,    -2,
-      -7,    -7,    -7,    -7,    -7,    -3,    -7,     7,    -2,    -2,
-      -7,    -7,    -7
+       5,    -4,    -2,    16,     5,    -8,    -8,    -8,     8,     8,
+      -8,    -8,    -8,    -8,    -8,    -3,    -8,     4,     8,     8,
+       8,     8,    -8,    -8,    -8,    -8,    -8
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-      -7,    -7,    -7,     8,    -7,     9,    -5,    -7
+      -8,    -8,    -8,    13,    -8,    14,    -7,    -8
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]].  What to do in state STATE-NUM.  If
@@ -533,23 +537,25 @@ static const yytype_int8 yypgoto[] =
 #define YYTABLE_NINF -1
 static const yytype_uint8 yytable[] =
 {
-      18,    19,     1,    10,    20,     2,     8,    12,    13,    14,
-      18,    19,    11,    21,    22,     9,     0,     0,    17
+      18,    19,    20,    21,     8,     9,    22,    18,    19,    20,
+      21,    23,    24,    25,    26,     1,    10,    11,     2,    12,
+      13,    14,     0,    17
 };
 
 static const yytype_int8 yycheck[] =
 {
-       3,     4,     8,     0,     7,    11,     6,     9,    10,    11,
-       3,     4,     4,    18,    19,     5,    -1,    -1,     9
+       3,     4,     5,     6,     8,     7,     9,     3,     4,     5,
+       6,    18,    19,    20,    21,    10,     0,     4,    13,    11,
+      12,    13,    -1,     9
 };
 
 /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
    symbol of state STATE-NUM.  */
 static const yytype_uint8 yystos[] =
 {
-       0,     8,    11,    13,    14,    15,    16,    19,     6,     5,
-       0,    15,     9,    10,    11,    17,    18,    17,     3,     4,
-       7,    18,    18
+       0,    10,    13,    15,    16,    17,    18,    21,     8,     7,
+       0,    17,    11,    12,    13,    19,    20,    19,     3,     4,
+       5,     6,     9,    20,    20,    20,    20
 };
 
 #define yyerrok		(yyerrstatus = 0)
@@ -1451,7 +1457,6 @@ yyreduce:
             (yyval.tr).n = crearNodoNoTerminal((yyvsp[(1) - (3)].tr).n, (yyvsp[(3) - (3)].tr).n, 3);
             (yyval.tr).tipo = tipos[1]; (yyval.tr).numericoDecimal = (yyvsp[(1) - (3)].tr).numericoDecimal + (yyvsp[(3) - (3)].tr).numericoDecimal;
         }
-
     ;}
     break;
 
@@ -1459,13 +1464,53 @@ yyreduce:
 
 /* Line 1464 of yacc.c  */
 #line 156 "src/pyBis.y"
-    {(yyval.tr) = (yyvsp[(1) - (1)].tr);;}
+    {
+        // Multiplicación de numerico * numerico
+        if (strcmp((yyvsp[(1) - (3)].tr).tipo, tipos[0]) == 0 && strcmp((yyvsp[(3) - (3)].tr).tipo, tipos[0]) == 0) { // comprobación del tipo
+            printf("> [OPERACION] - MULTIPLICACION {numerico / numerico}\n");
+            (yyval.tr).n = crearNodoNoTerminal((yyvsp[(1) - (3)].tr).n, (yyvsp[(3) - (3)].tr).n, 8);
+            (yyval.tr).tipo = tipos[0]; (yyval.tr).numerico = (yyvsp[(1) - (3)].tr).numerico * (yyvsp[(3) - (3)].tr).numerico;
+        }
+        // Multiplicación de numericoDecimal * numericoDecimal
+        else if (strcmp((yyvsp[(1) - (3)].tr).tipo, tipos[1]) == 0 && strcmp((yyvsp[(3) - (3)].tr).tipo, tipos[1]) == 0){ // comprobación del tipo
+            printf("> [OPERACION] - MULTIPLICACION {numericoDecimal / numericoDecimal}\n");
+            (yyval.tr).n = crearNodoNoTerminal((yyvsp[(1) - (3)].tr).n, (yyvsp[(3) - (3)].tr).n, 8);
+            (yyval.tr).tipo = tipos[1]; (yyval.tr).numericoDecimal = (yyvsp[(1) - (3)].tr).numericoDecimal * (yyvsp[(3) - (3)].tr).numericoDecimal;
+        }
+    ;}
     break;
 
   case 11:
 
 /* Line 1464 of yacc.c  */
-#line 167 "src/pyBis.y"
+#line 171 "src/pyBis.y"
+    {
+        // División de numerico / numerico
+        if (strcmp((yyvsp[(1) - (3)].tr).tipo, tipos[0]) == 0 && strcmp((yyvsp[(3) - (3)].tr).tipo, tipos[0]) == 0) { // comprobación del tipo
+            printf("> [OPERACION] - DIVISION {numerico / numerico}\n");
+            (yyval.tr).n = crearNodoNoTerminal((yyvsp[(1) - (3)].tr).n, (yyvsp[(3) - (3)].tr).n, 9);
+            (yyval.tr).tipo = tipos[0]; (yyval.tr).numerico = (yyvsp[(1) - (3)].tr).numerico / (yyvsp[(3) - (3)].tr).numerico;
+        }
+        // División de numericoDecimal / numericoDecimal
+        else if (strcmp((yyvsp[(1) - (3)].tr).tipo, tipos[1]) == 0 && strcmp((yyvsp[(3) - (3)].tr).tipo, tipos[1]) == 0){ // comprobación del tipo
+            printf("> [OPERACION] - DIVISION {numericoDecimal / numericoDecimal}\n");
+            (yyval.tr).n = crearNodoNoTerminal((yyvsp[(1) - (3)].tr).n, (yyvsp[(3) - (3)].tr).n, 9);
+            (yyval.tr).tipo = tipos[1]; (yyval.tr).numericoDecimal = (yyvsp[(1) - (3)].tr).numericoDecimal / (yyvsp[(3) - (3)].tr).numericoDecimal;
+        }
+    ;}
+    break;
+
+  case 12:
+
+/* Line 1464 of yacc.c  */
+#line 186 "src/pyBis.y"
+    {(yyval.tr) = (yyvsp[(1) - (1)].tr);;}
+    break;
+
+  case 13:
+
+/* Line 1464 of yacc.c  */
+#line 197 "src/pyBis.y"
     {
         printf(" IDENTIFICADOR %s\n",(yyvsp[(1) - (1)].stringVal));
         //Buscamos en la tabla el identificador
@@ -1485,10 +1530,10 @@ yyreduce:
     ;}
     break;
 
-  case 12:
+  case 14:
 
 /* Line 1464 of yacc.c  */
-#line 186 "src/pyBis.y"
+#line 216 "src/pyBis.y"
     {
         (yyval.tr).numerico = (yyvsp[(1) - (1)].enteroVal);
         printf("\n> [TIPO] - Numerico Positivo: %ld\n", (yyval.tr).numerico);
@@ -1497,10 +1542,10 @@ yyreduce:
     ;}
     break;
 
-  case 13:
+  case 15:
 
 /* Line 1464 of yacc.c  */
-#line 194 "src/pyBis.y"
+#line 224 "src/pyBis.y"
     {
         (yyval.tr).numericoDecimal = (yyvsp[(1) - (1)].realVal);
         printf("\n> [TIPO] - NumericoDecimal: %.3f\n", (yyval.tr).numericoDecimal); 
@@ -1509,10 +1554,10 @@ yyreduce:
     ;}
     break;
 
-  case 14:
+  case 16:
 
 /* Line 1464 of yacc.c  */
-#line 206 "src/pyBis.y"
+#line 236 "src/pyBis.y"
     { 
         printf("> [SENTENCIA] - Imprimir\n");
         (yyval.tr).n = crearNodoNoTerminal((yyvsp[(3) - (4)].tr).n, crearNodoVacio(), 4);        
@@ -1522,7 +1567,7 @@ yyreduce:
 
 
 /* Line 1464 of yacc.c  */
-#line 1526 "src/pyBis.c"
+#line 1571 "src/pyBis.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -1734,13 +1779,13 @@ yyreturn:
 
 
 /* Line 1684 of yacc.c  */
-#line 212 "src/pyBis.y"
+#line 242 "src/pyBis.y"
  
 
 //--------------------------------------------------- METODO MAIN -----------------------------------------------
 int main(int argc, char** argv) {
     yyin = fopen(argv[1], "rt");            //Apertura del archivo codigo.latino
-    yyout = fopen( "src/python.asm", "wt" );  //Para el archivo .ASM con nombre "latino.asm"
+    yyout = fopen( "./latino.asm", "wt" );  //Para el archivo .ASM con nombre "latino.asm"
 	yyparse();
     fclose(yyin);
     return 0;

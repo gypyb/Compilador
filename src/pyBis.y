@@ -37,7 +37,7 @@ char* tipos[] = {"numerico", "numericoDecimal", "texto", "bool"}; //Para parsear
 }
 
 /*Declaración de los TOKENS*/
-%token SUMA RESTA IGUAL APERTURAPARENTESIS CIERREPARENTESIS IMPRIMIR 
+%token SUMA RESTA MULTIPLICACION DIVISION IGUAL APERTURAPARENTESIS CIERREPARENTESIS IMPRIMIR 
 
 /*Declaración de los TOKENS que provienen de FLEX con su respectivo tipo*/
 %token <enteroVal> NUMERICO 
@@ -48,7 +48,7 @@ char* tipos[] = {"numerico", "numericoDecimal", "texto", "bool"}; //Para parsear
 %type <tr> sentencias sentencia tipos expresion asignacion imprimir  
 
 /*Declaración de la precedencia siendo menor la del primero y mayor la del último*/
-%left SUMA RESTA
+%left SUMA RESTA MULTIPLICACION DIVISION
 
 
 %start codigo
@@ -151,8 +151,38 @@ expresion:
             $$.n = crearNodoNoTerminal($1.n, $3.n, 3);
             $$.tipo = tipos[1]; $$.numericoDecimal = $1.numericoDecimal + $3.numericoDecimal;
         }
-
     }
+    // MULTIPLICACION
+    | expresion MULTIPLICACION tipos {
+        // Multiplicación de numerico * numerico
+        if (strcmp($1.tipo, tipos[0]) == 0 && strcmp($3.tipo, tipos[0]) == 0) { // comprobación del tipo
+            printf("> [OPERACION] - MULTIPLICACION {numerico / numerico}\n");
+            $$.n = crearNodoNoTerminal($1.n, $3.n, 8);
+            $$.tipo = tipos[0]; $$.numerico = $1.numerico * $3.numerico;
+        }
+        // Multiplicación de numericoDecimal * numericoDecimal
+        else if (strcmp($1.tipo, tipos[1]) == 0 && strcmp($3.tipo, tipos[1]) == 0){ // comprobación del tipo
+            printf("> [OPERACION] - MULTIPLICACION {numericoDecimal / numericoDecimal}\n");
+            $$.n = crearNodoNoTerminal($1.n, $3.n, 8);
+            $$.tipo = tipos[1]; $$.numericoDecimal = $1.numericoDecimal * $3.numericoDecimal;
+        }
+    }
+    // DIVISION
+    | expresion DIVISION tipos {
+        // División de numerico / numerico
+        if (strcmp($1.tipo, tipos[0]) == 0 && strcmp($3.tipo, tipos[0]) == 0) { // comprobación del tipo
+            printf("> [OPERACION] - DIVISION {numerico / numerico}\n");
+            $$.n = crearNodoNoTerminal($1.n, $3.n, 9);
+            $$.tipo = tipos[0]; $$.numerico = $1.numerico / $3.numerico;
+        }
+        // División de numericoDecimal / numericoDecimal
+        else if (strcmp($1.tipo, tipos[1]) == 0 && strcmp($3.tipo, tipos[1]) == 0){ // comprobación del tipo
+            printf("> [OPERACION] - DIVISION {numericoDecimal / numericoDecimal}\n");
+            $$.n = crearNodoNoTerminal($1.n, $3.n, 9);
+            $$.tipo = tipos[1]; $$.numericoDecimal = $1.numericoDecimal / $3.numericoDecimal;
+        }
+    }
+    
     | tipos {$$ = $1;} //la produccion operacion puede ser tipos, un subnivel para realizar la jerarquia de operaciones
 ;
 

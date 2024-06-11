@@ -40,13 +40,15 @@
    enum yytokentype {
      SUMA = 258,
      RESTA = 259,
-     IGUAL = 260,
-     APERTURAPARENTESIS = 261,
-     CIERREPARENTESIS = 262,
-     IMPRIMIR = 263,
-     NUMERICO = 264,
-     NUMERICODECIMAL = 265,
-     IDENTIFICADOR = 266
+     MULTIPLICACION = 260,
+     DIVISION = 261,
+     IGUAL = 262,
+     APERTURAPARENTESIS = 263,
+     CIERREPARENTESIS = 264,
+     IMPRIMIR = 265,
+     NUMERICO = 266,
+     NUMERICODECIMAL = 267,
+     IDENTIFICADOR = 268
    };
 #endif
 
@@ -73,7 +75,7 @@ typedef union YYSTYPE
 
 
 /* Line 1685 of yacc.c  */
-#line 77 "src/pyBis.h"
+#line 79 "src/pyBis.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

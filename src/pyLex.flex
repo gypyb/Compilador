@@ -11,6 +11,8 @@ int num_linea = 1;
 
 "+"	                                            return SUMA;
 "-"	                                            return RESTA;
+"*"                                             return MULTIPLICACION; 
+"/"                                             return DIVISION; 
 "="	                                            return IGUAL;
 "("	                                            return APERTURAPARENTESIS;
 ")"	                                            return CIERREPARENTESIS;
