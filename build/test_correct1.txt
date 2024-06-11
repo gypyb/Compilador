@@ -1,0 +1,5 @@
+variable1 = 1;
+if ( variable1 == 5 )
+    variable1 = 30;
+else
+    variable2 = 20;

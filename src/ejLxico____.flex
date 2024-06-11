@@ -1,5 +1,6 @@
 %{
-#include "parser.tab.h"  // Incluye el archivo de cabecera generado por Bison
+#include "node.h"
+#include "parser.h"  // Incluye el archivo de cabecera generado por Bison
 void countLines(void);
 %}
 
@@ -13,7 +14,7 @@ identifier  {letter}({letter}|{digit})*
 [ \t]+                     ;  // Ignora espacios y tabuladores
 \n                         { countLines(); }  // Incrementa contador de líneas
 "//".*                     ;  // Ignora comentarios de una línea
-"/*"([^*]|"\n"|*[^/])*"*/" ;  // Ignora comentarios de múltiples líneas
+
 {digit}+                   { yylval.intVal = atoi(yytext); return INTEGER; }  // Enteros
 {digit}+"."{digit}*        { yylval.realVal = atof(yytext); return REAL; }  // Reales
 \"([^\\"]|\\.)*\"          { yylval.strVal = strdup(yytext); return STRING; }  // Cadenas de texto
@@ -33,6 +34,9 @@ identifier  {letter}({letter}|{digit})*
 "{"                        { return BEGIN_BLOCK; }
 "}"                        { return END_BLOCK; }
 ";"                        { return SEMICOLON; }
+"if"                       { return IF; }          
+"else"                     { return ELSE; }        
+"while"                    { return WHILE; }  
 {identifier}               { yylval.strVal = strdup(yytext); return IDENTIFIER; }  // Identificadores
 
 %%
