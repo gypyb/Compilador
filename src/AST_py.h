@@ -221,11 +221,11 @@ void imprimirVariables(){
   fprintf(yyout, "zero: .float 0.0\n"); //Se inserta una variable auxiliar var_0 con valor 0.000
   //Bucle que recorre el array de variables y las imprime en el archivo .asm
   for (int i = 0; i < 64; i++) {
-      if (variables[i].disponible == true) {
-        if (strcmp(variables[i].tipo, "float") == 0) {
-            fprintf(yyout, "var_%d: .float %.3f\n", variables[i].nombre, variables[i].dato);
-        } else if (strcmp(variables[i].tipo, "cadena") == 0) {
-            fprintf(yyout, "var_%d: .asciiz \"%s\"\n", variables[i].nombre, variables[i].datocadena);
+      if(variables[i].disponible == true){
+        if(variables[i].tipo == "numerico"){
+          fprintf(yyout, "var_%d: .float %.3f\n", variables[i].nombre, variables[i].dato);
+        }else if(variables[i].tipo == "cadena"){
+          fprintf(yyout, "var_%d: .asciiz %s\n", variables[i].nombre, variables[i].datocadena);
         }
       }
   }
@@ -270,8 +270,9 @@ struct ast *crearNodoTerminal(double valor)
   n->izq = NULL; n->dcha = NULL; n->tipoNodo = 1; n->valor = valor;
   n->resultado = encontrarReg(); //Hacemos llamada al metodo para buscar un nuevo registro
   n->nombreVar = crearNombreVariable();
+  n->tipo = "numerico";
   printf("# [AST] - Registro $f%d ocupado para var_%d = %.3f\n", n->resultado, n->nombreVar, n->valor);
-  variables[n->resultado].dato = n->valor; variables[n->resultado].nombre = n->nombreVar; variables[n->resultado].disponible = true;
+  variables[n->resultado].dato = n->valor; variables[n->resultado].nombre = n->nombreVar; variables[n->resultado].disponible = true; variables[n->resultado].tipo = n->tipo;
   return n;
 }
 struct ast *crearNodoTerminalC(char *cadena)
@@ -280,8 +281,9 @@ struct ast *crearNodoTerminalC(char *cadena)
   n->izq = NULL; n->dcha = NULL; n->tipoNodo = 1; n->cadena = cadena;
   n->resultado = encontrarReg(); //Hacemos llamada al metodo para buscar un nuevo registro
   n->nombreVar = crearNombreVariable();
-  printf("# [AST] - Registro $f%d ocupado para var_%d = %.3f\n", n->resultado, n->nombreVar, n->cadena);
-  variables[n->resultado].datocadena = n->cadena; variables[n->resultado].nombre = n->nombreVar; variables[n->resultado].disponible = true;
+  n->tipo = "cadena";
+  printf("# [AST] - Registro $f%d ocupado para var_%d = %s\n", n->resultado, n->nombreVar, n->cadena);
+  variables[n->resultado].datocadena = n->cadena; variables[n->resultado].nombre = n->nombreVar; variables[n->resultado].disponible = true; variables[n->resultado].tipo = n->tipo;
   return n;
 }
 
@@ -300,7 +302,6 @@ struct ast *crearVariableTerminal(double valor, int registro)
   struct ast *n = malloc(sizeof(struct ast)); // Asigna memoria dinamicamente para el nuevo nodo
   n->izq = NULL; n->dcha = NULL; n->tipoNodo = 6; n->valor = valor;
   n->resultado = registro;
-  n->tipo = "float";
   return n;
 }
 
@@ -309,7 +310,6 @@ struct ast *crearVariableTerminalC(char *cadena, int registro)
   struct ast *n = malloc(sizeof(struct ast)); // Asigna memoria dinamicamente para el nuevo nodo
   n->izq = NULL; n->dcha = NULL; n->tipoNodo = 6; n->cadena = cadena;
   n->resultado = registro;
-  n->tipo = "cadena";
   return n;
 }
 
@@ -336,4 +336,14 @@ char* concatenarCadenas(const char* str1, const char* str2) {
     strcpy(resultado, str1);
     strcat(resultado, str2);
     return resultado;
+}
+void quitarComillas(char* cadena) {
+    int len = strlen(cadena);
+    int j = 0;
+    for (int i = 0; i < len; i++) {
+        if (cadena[i] != '"') {
+            cadena[j++] = cadena[i];
+        }
+    }
+    cadena[j] = '\0'; // Termina la nueva cadena correctamente
 }

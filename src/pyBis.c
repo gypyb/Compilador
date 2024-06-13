@@ -481,9 +481,9 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,    77,    77,    86,    87,    95,    96,    97,   104,   136,
-     160,   176,   191,   206,   213,   217,   226,   230,   234,   238,
-     242,   246,   250,   254,   268,   292,   300,   307,   319
+       0,    77,    77,    86,    87,    95,    96,    97,   104,   137,
+     161,   177,   192,   207,   214,   218,   227,   231,   235,   239,
+     243,   247,   251,   255,   269,   293,   301,   308,   320
 };
 #endif
 
@@ -1463,7 +1463,8 @@ yyreduce:
         }
         //Para crear un nuevo simbolo de tipo cadena
         else if (strcmp((yyvsp[(3) - (3)].tr).tipo, tipos[2]) == 0) { // comprobacion si es cadena
-            printf("Asignado el valor %s a la variable\n", (yyvsp[(3) - (3)].tr).cadena);
+            quitarComillas((yyvsp[(3) - (3)].tr).cadena);
+            printf("Asignado el valor \"%s\" a la variable\n", (yyvsp[(3) - (3)].tr).cadena);
             tabla[indice].nombre = (yyvsp[(1) - (3)].stringVal); tabla[indice].tipo = tipos[2]; tabla[indice].cadena = (yyvsp[(3) - (3)].tr).cadena; tabla[indice].registro = (yyvsp[(3) - (3)].tr).n->resultado;
             indice++; // incrementamos el valor del inidice para pasar a la siguiente posicion y dejar la anterior guardada
         }
@@ -1474,25 +1475,25 @@ yyreduce:
   case 9:
 
 /* Line 1464 of yacc.c  */
-#line 136 "src/pyBis.y"
+#line 137 "src/pyBis.y"
     {
 
         //Suma de numerico + numerico
         if (strcmp((yyvsp[(1) - (3)].tr).tipo, tipos[0]) == 0 && strcmp((yyvsp[(3) - (3)].tr).tipo, tipos[0]) == 0) { //comprobacion del tipo
-            printf("> [OPERACION] - SUMA {numerico + numerico}\n");
+            printf("> Suma { %d + %d }\n", (yyvsp[(1) - (3)].tr).numerico, (yyvsp[(3) - (3)].tr).numerico);
             (yyval.tr).n = crearNodoNoTerminal((yyvsp[(1) - (3)].tr).n, (yyvsp[(3) - (3)].tr).n, 2); 
             (yyval.tr).tipo = tipos[0]; (yyval.tr).numerico = (yyvsp[(1) - (3)].tr).numerico + (yyvsp[(3) - (3)].tr).numerico;      
         }
 
         //Suma de numericoDecimal + numericoDecimal
         else if (strcmp((yyvsp[(1) - (3)].tr).tipo, tipos[1]) == 0 && strcmp((yyvsp[(3) - (3)].tr).tipo, tipos[1]) == 0){  //comprobacion del tipo
-            printf("> [OPERACION] - SUMA {numericoDecimal + numericoDecimal}\n");
+            printf("> Suma { %.3f + %.3f }\n", (yyvsp[(1) - (3)].tr).numericoDecimal, (yyvsp[(3) - (3)].tr).numericoDecimal);
             (yyval.tr).n = crearNodoNoTerminal((yyvsp[(1) - (3)].tr).n, (yyvsp[(3) - (3)].tr).n, 2);
             (yyval.tr).tipo = tipos[1]; (yyval.tr).numericoDecimal = (yyvsp[(1) - (3)].tr).numericoDecimal + (yyvsp[(3) - (3)].tr).numericoDecimal;
         }
         //Concatenación de cadenas
         else if (strcmp((yyvsp[(1) - (3)].tr).tipo, tipos[2]) == 0 && strcmp((yyvsp[(3) - (3)].tr).tipo, tipos[2]) == 0) { // comprobacion del tipo
-            printf("> [OPERACION] - CONCATENACION {cadena + cadena}\n");
+            printf("> Concatenacion { %s + %s }\n", (yyvsp[(1) - (3)].tr).cadena, (yyvsp[(3) - (3)].tr).cadena);
             (yyval.tr).n = crearNodoNoTerminal((yyvsp[(1) - (3)].tr).n, (yyvsp[(3) - (3)].tr).n, 10);
             (yyval.tr).cadena = concatenarCadenas((yyvsp[(1) - (3)].tr).cadena, (yyvsp[(3) - (3)].tr).cadena);
             (yyval.tr).tipo = tipos[2];
@@ -1503,18 +1504,18 @@ yyreduce:
   case 10:
 
 /* Line 1464 of yacc.c  */
-#line 160 "src/pyBis.y"
+#line 161 "src/pyBis.y"
     {
         
         //Resta de numerico - numerico
         if (strcmp((yyvsp[(1) - (3)].tr).tipo, tipos[0]) == 0 && strcmp((yyvsp[(3) - (3)].tr).tipo, tipos[0]) == 0) {  //comprobacion del tipo
-            printf("> [OPERACION] - RESTA {numerico - numerico}\n");
+            printf("> Resta { %d - %d }\n", (yyvsp[(1) - (3)].tr).numerico, (yyvsp[(3) - (3)].tr).numerico);
             (yyval.tr).n = crearNodoNoTerminal((yyvsp[(1) - (3)].tr).n, (yyvsp[(3) - (3)].tr).n, 3);
             (yyval.tr).tipo = tipos[0]; (yyval.tr).numerico = (yyvsp[(1) - (3)].tr).numerico - (yyvsp[(3) - (3)].tr).numerico;
         }
         //Resta de numericoDecimal - numericoDecimal
         else if (strcmp((yyvsp[(1) - (3)].tr).tipo, tipos[1]) == 0 && strcmp((yyvsp[(3) - (3)].tr).tipo, tipos[1]) == 0){  //comprobacion del tipo
-            printf("> [OPERACION] - RESTA {numericoDecimal - numericoDecimal}\n");
+            printf("> Resta { %.3f - %.3f }\n", (yyvsp[(1) - (3)].tr).numericoDecimal, (yyvsp[(3) - (3)].tr).numericoDecimal);
             (yyval.tr).n = crearNodoNoTerminal((yyvsp[(1) - (3)].tr).n, (yyvsp[(3) - (3)].tr).n, 3);
             (yyval.tr).tipo = tipos[1]; (yyval.tr).numericoDecimal = (yyvsp[(1) - (3)].tr).numericoDecimal - (yyvsp[(3) - (3)].tr).numericoDecimal;
         }
@@ -1524,17 +1525,17 @@ yyreduce:
   case 11:
 
 /* Line 1464 of yacc.c  */
-#line 176 "src/pyBis.y"
+#line 177 "src/pyBis.y"
     {
         // Multiplicación de numerico * numerico
         if (strcmp((yyvsp[(1) - (3)].tr).tipo, tipos[0]) == 0 && strcmp((yyvsp[(3) - (3)].tr).tipo, tipos[0]) == 0) { // comprobación del tipo
-            printf("> [OPERACION] - MULTIPLICACION {numerico * numerico}\n");
+            printf("> Multiplicación { %d * %d }\n", (yyvsp[(1) - (3)].tr).numerico, (yyvsp[(3) - (3)].tr).numerico);
             (yyval.tr).n = crearNodoNoTerminal((yyvsp[(1) - (3)].tr).n, (yyvsp[(3) - (3)].tr).n, 8);
             (yyval.tr).tipo = tipos[0]; (yyval.tr).numerico = (yyvsp[(1) - (3)].tr).numerico * (yyvsp[(3) - (3)].tr).numerico;
         }
         // Multiplicación de numericoDecimal * numericoDecimal
         else if (strcmp((yyvsp[(1) - (3)].tr).tipo, tipos[1]) == 0 && strcmp((yyvsp[(3) - (3)].tr).tipo, tipos[1]) == 0){ // comprobación del tipo
-            printf("> [OPERACION] - MULTIPLICACION {numericoDecimal * numericoDecimal}\n");
+            printf("> Multiplicación { %.3f * %.3f }\n", (yyvsp[(1) - (3)].tr).numericoDecimal, (yyvsp[(3) - (3)].tr).numericoDecimal);
             (yyval.tr).n = crearNodoNoTerminal((yyvsp[(1) - (3)].tr).n, (yyvsp[(3) - (3)].tr).n, 8);
             (yyval.tr).tipo = tipos[1]; (yyval.tr).numericoDecimal = (yyvsp[(1) - (3)].tr).numericoDecimal * (yyvsp[(3) - (3)].tr).numericoDecimal;
         }
@@ -1544,17 +1545,17 @@ yyreduce:
   case 12:
 
 /* Line 1464 of yacc.c  */
-#line 191 "src/pyBis.y"
+#line 192 "src/pyBis.y"
     {
         // División de numerico / numerico
         if (strcmp((yyvsp[(1) - (3)].tr).tipo, tipos[0]) == 0 && strcmp((yyvsp[(3) - (3)].tr).tipo, tipos[0]) == 0) { // comprobación del tipo
-            printf("> [OPERACION] - DIVISION {numerico / numerico}\n");
+            printf("> División { %d / %d }\n", (yyvsp[(1) - (3)].tr).numerico, (yyvsp[(3) - (3)].tr).numerico);
             (yyval.tr).n = crearNodoNoTerminal((yyvsp[(1) - (3)].tr).n, (yyvsp[(3) - (3)].tr).n, 9);
             (yyval.tr).tipo = tipos[0]; (yyval.tr).numerico = (yyvsp[(1) - (3)].tr).numerico / (yyvsp[(3) - (3)].tr).numerico;
         }
         // División de numericoDecimal / numericoDecimal
         else if (strcmp((yyvsp[(1) - (3)].tr).tipo, tipos[1]) == 0 && strcmp((yyvsp[(3) - (3)].tr).tipo, tipos[1]) == 0){ // comprobación del tipo
-            printf("> [OPERACION] - DIVISION {numericoDecimal / numericoDecimal}\n");
+            printf("> Division { %.3f / %.3f }\n", (yyvsp[(1) - (3)].tr).numericoDecimal, (yyvsp[(3) - (3)].tr).numericoDecimal);
             (yyval.tr).n = crearNodoNoTerminal((yyvsp[(1) - (3)].tr).n, (yyvsp[(3) - (3)].tr).n, 9);
             (yyval.tr).tipo = tipos[1]; (yyval.tr).numericoDecimal = (yyvsp[(1) - (3)].tr).numericoDecimal / (yyvsp[(3) - (3)].tr).numericoDecimal;
         }
@@ -1564,16 +1565,16 @@ yyreduce:
   case 13:
 
 /* Line 1464 of yacc.c  */
-#line 206 "src/pyBis.y"
+#line 207 "src/pyBis.y"
     {(yyval.tr) = (yyvsp[(1) - (1)].tr);;}
     break;
 
   case 14:
 
 /* Line 1464 of yacc.c  */
-#line 213 "src/pyBis.y"
+#line 214 "src/pyBis.y"
     {
-        printf("> [SENTENCIA] - IF\n");
+        printf("> Condicional IF\n");
         (yyval.tr).n = crearNodoIf((yyvsp[(3) - (7)].tr).n, (yyvsp[(6) - (7)].tr).n, crearNodoVacio());
     ;}
     break;
@@ -1581,9 +1582,9 @@ yyreduce:
   case 15:
 
 /* Line 1464 of yacc.c  */
-#line 217 "src/pyBis.y"
+#line 218 "src/pyBis.y"
     {
-        printf("> [SENTENCIA] - IF-ELSE\n");
+        printf("> Condicional IF-ELSE\n");
         (yyval.tr).n = crearNodoIf((yyvsp[(3) - (10)].tr).n, (yyvsp[(6) - (10)].tr).n, (yyvsp[(9) - (10)].tr).n);
     ;}
     break;
@@ -1591,9 +1592,9 @@ yyreduce:
   case 16:
 
 /* Line 1464 of yacc.c  */
-#line 226 "src/pyBis.y"
+#line 227 "src/pyBis.y"
     {
-          printf("> [OPERACION] - IGUALDAD\n");
+          printf("--logic--> IGUALDAD\n");
           (yyval.tr).n = crearNodoNoTerminal((yyvsp[(1) - (3)].tr).n, (yyvsp[(3) - (3)].tr).n, 11); // 11 es el tipo de nodo para igualdad
       ;}
     break;
@@ -1601,9 +1602,9 @@ yyreduce:
   case 17:
 
 /* Line 1464 of yacc.c  */
-#line 230 "src/pyBis.y"
+#line 231 "src/pyBis.y"
     {
-          printf("> [OPERACION] - DESIGUALDAD\n");
+          printf("--logic--> DESIGUALDAD\n");
           (yyval.tr).n = crearNodoNoTerminal((yyvsp[(1) - (3)].tr).n, (yyvsp[(3) - (3)].tr).n, 12); // 12 es el tipo de nodo para desigualdad
       ;}
     break;
@@ -1611,9 +1612,9 @@ yyreduce:
   case 18:
 
 /* Line 1464 of yacc.c  */
-#line 234 "src/pyBis.y"
+#line 235 "src/pyBis.y"
     {
-          printf("> [OPERACION] - MENOR QUE\n");
+          printf("--logic--> MENOR QUE\n");
           (yyval.tr).n = crearNodoNoTerminal((yyvsp[(1) - (3)].tr).n, (yyvsp[(3) - (3)].tr).n, 13); // 13 es el tipo de nodo para menor que
       ;}
     break;
@@ -1621,9 +1622,9 @@ yyreduce:
   case 19:
 
 /* Line 1464 of yacc.c  */
-#line 238 "src/pyBis.y"
+#line 239 "src/pyBis.y"
     {
-          printf("> [OPERACION] - MAYOR QUE\n");
+          printf("--logic--> MAYOR QUE\n");
           (yyval.tr).n = crearNodoNoTerminal((yyvsp[(1) - (3)].tr).n, (yyvsp[(3) - (3)].tr).n, 14); // 14 es el tipo de nodo para mayor que
       ;}
     break;
@@ -1631,9 +1632,9 @@ yyreduce:
   case 20:
 
 /* Line 1464 of yacc.c  */
-#line 242 "src/pyBis.y"
+#line 243 "src/pyBis.y"
     {
-          printf("> [OPERACION] - MENOR O IGUAL QUE\n");
+          printf("--logic--> MENOR O IGUAL QUE\n");
           (yyval.tr).n = crearNodoNoTerminal((yyvsp[(1) - (3)].tr).n, (yyvsp[(3) - (3)].tr).n, 15); // 15 es el tipo de nodo para menor o igual que
       ;}
     break;
@@ -1641,9 +1642,9 @@ yyreduce:
   case 21:
 
 /* Line 1464 of yacc.c  */
-#line 246 "src/pyBis.y"
+#line 247 "src/pyBis.y"
     {
-          printf("> [OPERACION] - MAYOR O IGUAL QUE\n");
+          printf("--logic--> MAYOR O IGUAL QUE\n");
           (yyval.tr).n = crearNodoNoTerminal((yyvsp[(1) - (3)].tr).n, (yyvsp[(3) - (3)].tr).n, 16); // 16 es el tipo de nodo para mayor o igual que
       ;}
     break;
@@ -1651,9 +1652,9 @@ yyreduce:
   case 22:
 
 /* Line 1464 of yacc.c  */
-#line 250 "src/pyBis.y"
+#line 251 "src/pyBis.y"
     {
-          printf("> [OPERACION] - AND\n");
+          printf("--logic--> AND\n");
           (yyval.tr).n = crearNodoNoTerminal((yyvsp[(1) - (3)].tr).n, (yyvsp[(3) - (3)].tr).n, 17); // 17 es el tipo de nodo para AND
       ;}
     break;
@@ -1661,9 +1662,9 @@ yyreduce:
   case 23:
 
 /* Line 1464 of yacc.c  */
-#line 254 "src/pyBis.y"
+#line 255 "src/pyBis.y"
     {
-          printf("> [OPERACION] - OR\n");
+          printf("--logic--> OR\n");
           (yyval.tr).n = crearNodoNoTerminal((yyvsp[(1) - (3)].tr).n, (yyvsp[(3) - (3)].tr).n, 18); // 18 es el tipo de nodo para OR
       ;}
     break;
@@ -1671,9 +1672,9 @@ yyreduce:
   case 24:
 
 /* Line 1464 of yacc.c  */
-#line 268 "src/pyBis.y"
+#line 269 "src/pyBis.y"
     {
-        printf(" IDENTIFICADOR %s\n",(yyvsp[(1) - (1)].stringVal));
+        printf(" <-- IDENTIFICADOR \n");
         //Buscamos en la tabla el identificador
         if(buscarTabla(indice, (yyvsp[(1) - (1)].stringVal), tabla) != -1){     //En este IF entra si buscarTabla devuelve la posicion
             int pos = buscarTabla(indice, (yyvsp[(1) - (1)].stringVal), tabla);
@@ -1699,10 +1700,10 @@ yyreduce:
   case 25:
 
 /* Line 1464 of yacc.c  */
-#line 292 "src/pyBis.y"
+#line 293 "src/pyBis.y"
     {
         (yyval.tr).numerico = (yyvsp[(1) - (1)].enteroVal);
-        printf("\n> [TIPO] - Numerico Positivo: %ld\n", (yyval.tr).numerico);
+        printf("\n- Tipo Int: %ld\n", (yyval.tr).numerico);
         (yyval.tr).n = crearNodoTerminal((yyvsp[(1) - (1)].enteroVal));  
         (yyval.tr).tipo = tipos[0]; 
     ;}
@@ -1711,10 +1712,10 @@ yyreduce:
   case 26:
 
 /* Line 1464 of yacc.c  */
-#line 300 "src/pyBis.y"
+#line 301 "src/pyBis.y"
     {
         (yyval.tr).numericoDecimal = (yyvsp[(1) - (1)].realVal);
-        printf("\n> [TIPO] - NumericoDecimal: %.3f\n", (yyval.tr).numericoDecimal); 
+        printf("\n- Tipo Double: %.3f\n", (yyval.tr).numericoDecimal); 
         (yyval.tr).n = crearNodoTerminal((yyvsp[(1) - (1)].realVal));  
         (yyval.tr).tipo = tipos[1];  
     ;}
@@ -1723,10 +1724,10 @@ yyreduce:
   case 27:
 
 /* Line 1464 of yacc.c  */
-#line 307 "src/pyBis.y"
+#line 308 "src/pyBis.y"
     {
         (yyval.tr).cadena = (yyvsp[(1) - (1)].stringVal);
-        printf("\n> [TIPO] - Cadena: %s\n", (yyval.tr).cadena);
+        printf("\n- Tipo String: %s\n", (yyval.tr).cadena);
         (yyval.tr).n = crearNodoTerminalC((yyvsp[(1) - (1)].stringVal));
         (yyval.tr).tipo = tipos[2];
     ;}
@@ -1735,9 +1736,9 @@ yyreduce:
   case 28:
 
 /* Line 1464 of yacc.c  */
-#line 319 "src/pyBis.y"
-    { 
-        printf("> [SENTENCIA] - Imprimir\n");
+#line 320 "src/pyBis.y"
+    {
+        printf("> Funcion Imprimir");
         (yyval.tr).n = crearNodoNoTerminal((yyvsp[(3) - (4)].tr).n, crearNodoVacio(), 4);        
     ;}
     break;
@@ -1745,7 +1746,7 @@ yyreduce:
 
 
 /* Line 1464 of yacc.c  */
-#line 1749 "src/pyBis.c"
+#line 1750 "src/pyBis.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -1957,7 +1958,7 @@ yyreturn:
 
 
 /* Line 1684 of yacc.c  */
-#line 325 "src/pyBis.y"
+#line 326 "src/pyBis.y"
  
 
 //--------------------------------------------------- METODO MAIN -----------------------------------------------

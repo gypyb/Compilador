@@ -1,12 +1,4 @@
-carlos = 5 - 3
+cinco = 5
+siete = 7
 
-cadena = "carla es"+" muy buena"
-print(cadena)
-
-if(carlos == 2):
-    print(carlos)
-end-if
-
-
-
-
+if(cinco >= siete): cad = "a" + "b" + "c" + "ba" print(cad) else: dac = "zjk" print(dac) end-if

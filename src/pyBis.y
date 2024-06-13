@@ -90,7 +90,7 @@ sentencias:
 ;
 
 //PRODUCCION "sentencia", puede estar formado por asignaciones, condicionales, bucles whiles, imprimir
-//D --> A | I 
+//D --> A | I | C
 sentencia:   //Por defecto bison, asigna $1 a $$ por lo que no es obligatoria realizar la asignacion
     asignacion              
     | imprimir
@@ -118,7 +118,8 @@ asignacion:
         }
         //Para crear un nuevo simbolo de tipo cadena
         else if (strcmp($3.tipo, tipos[2]) == 0) { // comprobacion si es cadena
-            printf("Asignado el valor %s a la variable\n", $3.cadena);
+            quitarComillas($3.cadena);
+            printf("Asignado el valor \"%s\" a la variable\n", $3.cadena);
             tabla[indice].nombre = $1; tabla[indice].tipo = tipos[2]; tabla[indice].cadena = $3.cadena; tabla[indice].registro = $3.n->resultado;
             indice++; // incrementamos el valor del inidice para pasar a la siguiente posicion y dejar la anterior guardada
         }
@@ -137,20 +138,20 @@ expresion:
 
         //Suma de numerico + numerico
         if (strcmp($1.tipo, tipos[0]) == 0 && strcmp($3.tipo, tipos[0]) == 0) { //comprobacion del tipo
-            printf("> [OPERACION] - SUMA {numerico + numerico}\n");
+            printf("> Suma { %d + %d }\n", $1.numerico, $3.numerico);
             $$.n = crearNodoNoTerminal($1.n, $3.n, 2); 
             $$.tipo = tipos[0]; $$.numerico = $1.numerico + $3.numerico;      
         }
 
         //Suma de numericoDecimal + numericoDecimal
         else if (strcmp($1.tipo, tipos[1]) == 0 && strcmp($3.tipo, tipos[1]) == 0){  //comprobacion del tipo
-            printf("> [OPERACION] - SUMA {numericoDecimal + numericoDecimal}\n");
+            printf("> Suma { %.3f + %.3f }\n", $1.numericoDecimal, $3.numericoDecimal);
             $$.n = crearNodoNoTerminal($1.n, $3.n, 2);
             $$.tipo = tipos[1]; $$.numericoDecimal = $1.numericoDecimal + $3.numericoDecimal;
         }
         //Concatenación de cadenas
         else if (strcmp($1.tipo, tipos[2]) == 0 && strcmp($3.tipo, tipos[2]) == 0) { // comprobacion del tipo
-            printf("> [OPERACION] - CONCATENACION {cadena + cadena}\n");
+            printf("> Concatenacion { %s + %s }\n", $1.cadena, $3.cadena);
             $$.n = crearNodoNoTerminal($1.n, $3.n, 10);
             $$.cadena = concatenarCadenas($1.cadena, $3.cadena);
             $$.tipo = tipos[2];
@@ -161,13 +162,13 @@ expresion:
         
         //Resta de numerico - numerico
         if (strcmp($1.tipo, tipos[0]) == 0 && strcmp($3.tipo, tipos[0]) == 0) {  //comprobacion del tipo
-            printf("> [OPERACION] - RESTA {numerico - numerico}\n");
+            printf("> Resta { %d - %d }\n", $1.numerico, $3.numerico);
             $$.n = crearNodoNoTerminal($1.n, $3.n, 3);
             $$.tipo = tipos[0]; $$.numerico = $1.numerico - $3.numerico;
         }
         //Resta de numericoDecimal - numericoDecimal
         else if (strcmp($1.tipo, tipos[1]) == 0 && strcmp($3.tipo, tipos[1]) == 0){  //comprobacion del tipo
-            printf("> [OPERACION] - RESTA {numericoDecimal - numericoDecimal}\n");
+            printf("> Resta { %.3f - %.3f }\n", $1.numericoDecimal, $3.numericoDecimal);
             $$.n = crearNodoNoTerminal($1.n, $3.n, 3);
             $$.tipo = tipos[1]; $$.numericoDecimal = $1.numericoDecimal - $3.numericoDecimal;
         }
@@ -176,13 +177,13 @@ expresion:
     | expresion MULTIPLICACION tipos {
         // Multiplicación de numerico * numerico
         if (strcmp($1.tipo, tipos[0]) == 0 && strcmp($3.tipo, tipos[0]) == 0) { // comprobación del tipo
-            printf("> [OPERACION] - MULTIPLICACION {numerico * numerico}\n");
+            printf("> Multiplicación { %d * %d }\n", $1.numerico, $3.numerico);
             $$.n = crearNodoNoTerminal($1.n, $3.n, 8);
             $$.tipo = tipos[0]; $$.numerico = $1.numerico * $3.numerico;
         }
         // Multiplicación de numericoDecimal * numericoDecimal
         else if (strcmp($1.tipo, tipos[1]) == 0 && strcmp($3.tipo, tipos[1]) == 0){ // comprobación del tipo
-            printf("> [OPERACION] - MULTIPLICACION {numericoDecimal * numericoDecimal}\n");
+            printf("> Multiplicación { %.3f * %.3f }\n", $1.numericoDecimal, $3.numericoDecimal);
             $$.n = crearNodoNoTerminal($1.n, $3.n, 8);
             $$.tipo = tipos[1]; $$.numericoDecimal = $1.numericoDecimal * $3.numericoDecimal;
         }
@@ -191,13 +192,13 @@ expresion:
     | expresion DIVISION tipos {
         // División de numerico / numerico
         if (strcmp($1.tipo, tipos[0]) == 0 && strcmp($3.tipo, tipos[0]) == 0) { // comprobación del tipo
-            printf("> [OPERACION] - DIVISION {numerico / numerico}\n");
+            printf("> División { %d / %d }\n", $1.numerico, $3.numerico);
             $$.n = crearNodoNoTerminal($1.n, $3.n, 9);
             $$.tipo = tipos[0]; $$.numerico = $1.numerico / $3.numerico;
         }
         // División de numericoDecimal / numericoDecimal
         else if (strcmp($1.tipo, tipos[1]) == 0 && strcmp($3.tipo, tipos[1]) == 0){ // comprobación del tipo
-            printf("> [OPERACION] - DIVISION {numericoDecimal / numericoDecimal}\n");
+            printf("> Division { %.3f / %.3f }\n", $1.numericoDecimal, $3.numericoDecimal);
             $$.n = crearNodoNoTerminal($1.n, $3.n, 9);
             $$.tipo = tipos[1]; $$.numericoDecimal = $1.numericoDecimal / $3.numericoDecimal;
         }
@@ -211,11 +212,11 @@ expresion:
 //C --> if ( B ): I ENDIF
 condicional:
     IF APERTURAPARENTESIS logic_expr CIERREPARENTESIS DOSPUNTOS sentencias ENDIF{
-        printf("> [SENTENCIA] - IF\n");
+        printf("> Condicional IF\n");
         $$.n = crearNodoIf($3.n, $6.n, crearNodoVacio());
     }
     | IF APERTURAPARENTESIS logic_expr CIERREPARENTESIS DOSPUNTOS sentencias ELSE DOSPUNTOS sentencias ENDIF {
-        printf("> [SENTENCIA] - IF-ELSE\n");
+        printf("> Condicional IF-ELSE\n");
         $$.n = crearNodoIf($3.n, $6.n, $9.n);
     }
 ;
@@ -224,35 +225,35 @@ condicional:
 // Definición de expresiones lógicas para el if
 logic_expr:
       expresion IGUALREL expresion {
-          printf("> [OPERACION] - IGUALDAD\n");
+          printf("--logic--> IGUALDAD\n");
           $$.n = crearNodoNoTerminal($1.n, $3.n, 11); // 11 es el tipo de nodo para igualdad
       }
     | expresion NOIGUALREL expresion {
-          printf("> [OPERACION] - DESIGUALDAD\n");
+          printf("--logic--> DESIGUALDAD\n");
           $$.n = crearNodoNoTerminal($1.n, $3.n, 12); // 12 es el tipo de nodo para desigualdad
       }
     | expresion MENORREL expresion {
-          printf("> [OPERACION] - MENOR QUE\n");
+          printf("--logic--> MENOR QUE\n");
           $$.n = crearNodoNoTerminal($1.n, $3.n, 13); // 13 es el tipo de nodo para menor que
       }
     | expresion MAYORREL expresion {
-          printf("> [OPERACION] - MAYOR QUE\n");
+          printf("--logic--> MAYOR QUE\n");
           $$.n = crearNodoNoTerminal($1.n, $3.n, 14); // 14 es el tipo de nodo para mayor que
       }
     | expresion MENORIGUALREL expresion {
-          printf("> [OPERACION] - MENOR O IGUAL QUE\n");
+          printf("--logic--> MENOR O IGUAL QUE\n");
           $$.n = crearNodoNoTerminal($1.n, $3.n, 15); // 15 es el tipo de nodo para menor o igual que
       }
     | expresion MAYORIGUALREL expresion {
-          printf("> [OPERACION] - MAYOR O IGUAL QUE\n");
+          printf("--logic--> MAYOR O IGUAL QUE\n");
           $$.n = crearNodoNoTerminal($1.n, $3.n, 16); // 16 es el tipo de nodo para mayor o igual que
       }
     | expresion AND expresion {
-          printf("> [OPERACION] - AND\n");
+          printf("--logic--> AND\n");
           $$.n = crearNodoNoTerminal($1.n, $3.n, 17); // 17 es el tipo de nodo para AND
       }
     | expresion OR expresion {
-          printf("> [OPERACION] - OR\n");
+          printf("--logic--> OR\n");
           $$.n = crearNodoNoTerminal($1.n, $3.n, 18); // 18 es el tipo de nodo para OR
       }
 ;
@@ -266,7 +267,7 @@ tipos:
 
     //Identificador
     IDENTIFICADOR {
-        printf(" IDENTIFICADOR %s\n",$1);
+        printf(" <-- IDENTIFICADOR \n");
         //Buscamos en la tabla el identificador
         if(buscarTabla(indice, $1, tabla) != -1){     //En este IF entra si buscarTabla devuelve la posicion
             int pos = buscarTabla(indice, $1, tabla);
@@ -291,7 +292,7 @@ tipos:
     //Numero entero normal
     | NUMERICO {
         $$.numerico = $1;
-        printf("\n> [TIPO] - Numerico Positivo: %ld\n", $$.numerico);
+        printf("\n- Tipo Int: %ld\n", $$.numerico);
         $$.n = crearNodoTerminal($1);  
         $$.tipo = tipos[0]; 
     }
@@ -299,14 +300,14 @@ tipos:
     //Numero decimal normal
     | NUMERICODECIMAL {
         $$.numericoDecimal = $1;
-        printf("\n> [TIPO] - NumericoDecimal: %.3f\n", $$.numericoDecimal); 
+        printf("\n- Tipo Double: %.3f\n", $$.numericoDecimal); 
         $$.n = crearNodoTerminal($1);  
         $$.tipo = tipos[1];  
     }
     //Cadena de texto
     | CADENA {
         $$.cadena = $1;
-        printf("\n> [TIPO] - Cadena: %s\n", $$.cadena);
+        printf("\n- Tipo String: %s\n", $$.cadena);
         $$.n = crearNodoTerminalC($1);
         $$.tipo = tipos[2];
     }
@@ -316,8 +317,8 @@ tipos:
 //Representa la estructura del print en lenguaje latino
 //I --> print ( E ) 
 imprimir: 
-    IMPRIMIR APERTURAPARENTESIS expresion CIERREPARENTESIS { 
-        printf("> [SENTENCIA] - Imprimir\n");
+    IMPRIMIR APERTURAPARENTESIS expresion CIERREPARENTESIS {
+        printf("> Funcion Imprimir");
         $$.n = crearNodoNoTerminal($3.n, crearNodoVacio(), 4);        
     }
 ;
