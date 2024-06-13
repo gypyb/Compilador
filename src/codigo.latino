@@ -1,14 +1,12 @@
-suma = 5 + 7
-imprimir(suma)
+carlos = 5 - 3
 
-resta = 10 - 2
-imprimir(resta)
+cadena = "carla es"+" muy buena"
+print(cadena)
 
-multiplicacion = 2 * 5
-imprimir(multiplicacion)
+if(carlos == 2):
+    print(carlos)
+end-if
 
-division = 4 / 2
-imprimir(division)
 
 
 

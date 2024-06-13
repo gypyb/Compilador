@@ -7,3 +7,13 @@ variable, 6
 sentencias, 7
 multiplicacion, 8
 division, 9
+concatenacion, 10
+igualdad, 11
+desigualdad, 12
+menorque, 13
+mayorque, 14
+menorigualque, 15
+mayorigualque, 16
+and, 17
+or, 18
+if, 19

@@ -46,9 +46,22 @@
      APERTURAPARENTESIS = 263,
      CIERREPARENTESIS = 264,
      IMPRIMIR = 265,
-     NUMERICO = 266,
-     NUMERICODECIMAL = 267,
-     IDENTIFICADOR = 268
+     IGUALREL = 266,
+     NOIGUALREL = 267,
+     MENORREL = 268,
+     MAYORREL = 269,
+     MENORIGUALREL = 270,
+     MAYORIGUALREL = 271,
+     ENDIF = 272,
+     AND = 273,
+     OR = 274,
+     DOSPUNTOS = 275,
+     IF = 276,
+     ELSE = 277,
+     NUMERICO = 278,
+     NUMERICODECIMAL = 279,
+     IDENTIFICADOR = 280,
+     CADENA = 281
    };
 #endif
 
@@ -59,7 +72,7 @@ typedef union YYSTYPE
 {
 
 /* Line 1685 of yacc.c  */
-#line 26 "src/pyBis.y"
+#line 28 "src/pyBis.y"
 
   int enteroVal;
   float realVal;
@@ -69,13 +82,14 @@ typedef union YYSTYPE
     float numericoDecimal;
     char* texto;
     char* tipo;             //Define el tipo que se esta usando
+    char* cadena;           // Añadir el miembro cadena
     struct ast *n;          //Para almacenar los nodos del AST
   }tr;
 
 
 
 /* Line 1685 of yacc.c  */
-#line 79 "src/pyBis.h"
+#line 93 "src/pyBis.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

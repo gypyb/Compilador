@@ -29,7 +29,7 @@ int num_linea = 1;
 "while"                                         return WHILE;
 "("	                                            return APERTURAPARENTESIS;
 ")"	                                            return CIERREPARENTESIS;
-imprimir|escribir|poner                         return IMPRIMIR;
+imprimir|escribir|print                         return IMPRIMIR;
 [0-9]+                                          {yylval.enteroVal = atoi(yytext); return NUMERICO;}
 [0-9]+.[0-9]+                                   {yylval.realVal   = atof(yytext); return NUMERICODECIMAL;}
 _?[a-zA-Z0-9]+		                            {yylval.stringVal = strdup(yytext); printf(yytext);return IDENTIFICADOR;}
