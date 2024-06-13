@@ -213,11 +213,23 @@ expresion:
 condicional:
     IF APERTURAPARENTESIS logic_expr CIERREPARENTESIS DOSPUNTOS sentencias ENDIF{
         printf("> Condicional IF\n");
-        $$.n = crearNodoIf($3.n, $6.n, crearNodoVacio());
+        printf(" ---------------Resultado logico = %d\n", $3.n->boolean);
+        if($3.n->boolean == 1){
+            $$.n = crearNodoIf($3.n, $6.n, crearNodoVacio());
+        }else{
+            $$.n = crearNodoIf($3.n, crearNodoVacio(), crearNodoVacio());
+        }
+        
     }
     | IF APERTURAPARENTESIS logic_expr CIERREPARENTESIS DOSPUNTOS sentencias ELSE DOSPUNTOS sentencias ENDIF {
         printf("> Condicional IF-ELSE\n");
-        $$.n = crearNodoIf($3.n, $6.n, $9.n);
+        printf(" ---------------Resultado logico = %d\n", $3.n->boolean);
+        if($3.n->boolean == 1){
+            $$.n = crearNodoIf($3.n, $6.n, crearNodoVacio());
+        }else{
+            $$.n = crearNodoIf($3.n, crearNodoVacio(), $9.n);
+        }
+        
     }
 ;
 
@@ -225,8 +237,66 @@ condicional:
 // Definición de expresiones lógicas para el if
 logic_expr:
       expresion IGUALREL expresion {
-          printf("--logic--> IGUALDAD\n");
-          $$.n = crearNodoNoTerminal($1.n, $3.n, 11); // 11 es el tipo de nodo para igualdad
+        printf("--logic--> IGUALDAD\n");
+        if(strcmp($1.tipo, tipos[0]) == 0 && strcmp($3.tipo, tipos[0])){
+            printf("%d == %d ?/n", $1.numerico, $3.numerico);
+           if($1.numerico == $3.numerico){
+                $$.n->boolean = 1;
+                printf("TRUE");
+            } else{
+                $$.n->boolean = 0;
+                printf("FALSE");
+            } 
+        }else if(strcmp($1.tipo, tipos[1]) == 0 && strcmp($3.tipo, tipos[1])){
+            printf("%.3f == %.3f ?/n", $1.numericoDecimal, $3.numericoDecimal);
+           if($1.numericoDecimal == $3.numericoDecimal){
+                $$.n->boolean = 1;
+                printf("TRUE");
+            } else{
+                $$.n->boolean = 0;
+                printf("FALSE");
+            } 
+        }else if(strcmp($1.tipo, tipos[2]) == 0 && strcmp($3.tipo, tipos[2])){
+            printf("%s == %s ?/n", $1.cadena, $3.cadena);
+           if($1.cadena == $3.cadena){
+                $$.n->boolean = 1;
+                printf("TRUE");
+            } else{
+                $$.n->boolean = 0;
+                printf("FALSE");
+            } 
+        }if((strcmp(tabla[buscarTabla(0,$1.n->cadena,tabla)].tipo,tipos[0]) == 0) && (strcmp(tabla[buscarTabla(0,$3.n->cadena,tabla)].tipo,tipos[0])==0)){
+
+            if(tabla[buscarTabla(0,$1.n->cadena,tabla)].numerico == tabla[buscarTabla(0,$3.n->cadena,tabla)].numerico){
+                printf("%s == %s ?/n", $1.n->cadena, $3.n->cadena);
+                $$.n->boolean = 1;
+                printf("TRUE");
+            }else{
+                $$.n->boolean = 0;
+                printf("FALSE");
+            }
+        }else if((strcmp(tabla[buscarTabla(0,$1.n->cadena,tabla)].tipo,tipos[1]) == 0) && (strcmp(tabla[buscarTabla(0,$3.n->cadena,tabla)].tipo,tipos[1])==0)){
+            if(tabla[buscarTabla(0,$1.n->cadena,tabla)].numericoDecimal == tabla[buscarTabla(0,$3.n->cadena,tabla)].numericoDecimal){
+                printf("%s == %s ?/n", $1.n->cadena, $3.n->cadena);
+                $$.n->boolean = 1;
+                printf("TRUE");
+            }else{
+                $$.n->boolean = 0;
+                printf("FALSE");
+            }
+        }else if((strcmp(tabla[buscarTabla(0,$1.n->cadena,tabla)].tipo,tipos[2]) == 0) && (strcmp(tabla[buscarTabla(0,$3.n->cadena,tabla)].tipo,tipos[2])==0)){
+            if(tabla[buscarTabla(0,$1.n->cadena,tabla)].cadena == tabla[buscarTabla(0,$3.n->cadena,tabla)].cadena){
+                printf("%s == %s ?/n", $1.n->cadena, $3.n->cadena);
+                $$.n->boolean = 1;
+                printf("TRUE");
+            }else{
+                $$.n->boolean = 0;
+                printf("FALSE");
+            }
+        }
+        
+        $$.n = crearNodoNoTerminal($1.n, $3.n, 11); // 11 es el tipo de nodo para igualdad
+          
       }
     | expresion NOIGUALREL expresion {
           printf("--logic--> DESIGUALDAD\n");

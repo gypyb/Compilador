@@ -1,4 +1,10 @@
 cinco = 5
-siete = 7
+siete = 5
 
-if(cinco >= siete): cad = "a" + "b" + "c" + "ba" print(cad) else: dac = "zjk" print(dac) end-if
+if(cinco == siete): 
+    cad = "a" + "b" + "c" + "ba" 
+    print(cad) 
+else: 
+    dac = "zjk" 
+    print(dac) 
+end-if

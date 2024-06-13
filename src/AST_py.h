@@ -36,6 +36,7 @@ struct ast
   double valor;        // Almacena el valor del nodo 
   char *tipo;          // El tipo de dato que almacena: numericoDecimal, numerico o string
   int resultado;       // Registro donde está el resultado
+  int boolean;
   int nombreVar;       // Indica el nombre de la variable
   char *cadena;
 };
@@ -293,6 +294,7 @@ struct ast *crearNodoNoTerminal(struct ast *izq, struct ast *dcha, int tipoNodo)
   struct ast *n = malloc(sizeof(struct ast)); // Crea un nuevo nodo
   n->izq = izq; n->dcha = dcha; n->tipoNodo = tipoNodo; // Asignamos al nodo genérico sus hijos y tipo
   n->resultado = encontrarReg(); //Hacemos llamada al metodo para buscar un nuevo registro
+  n->boolean = 0;
   return n;
 }
 
