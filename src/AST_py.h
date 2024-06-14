@@ -17,11 +17,17 @@ bool registros[32] = {[0 ... 29] = true, [30 ... 31] = true}; // Los registros 3
 
 // Estructura variable, se hará uso de la misma para almacenar y imprimir las variables del codigo latino
 struct variable {
+  union{
     float dato;
     char *datocadena;
-    int nombre; //limite de caracteres de la variable
-    bool disponible;
-    char *tipo;
+    double* array_values;
+    double** array_values_2d;
+  };
+  char* nombres;
+  int nombre; //limite de caracteres de la variable
+  bool disponible;
+  char *tipo;
+  int array_size;
 };
 
 struct variable variables[64]; // Declaramos el array de variables usando la estructura definida

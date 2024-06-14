@@ -36,10 +36,14 @@ int yylex(void);
     char* tipo;             //Define el tipo que se esta usando
     char* cadena;           // Añadir el miembro cadena
     struct ast *n;          //Para almacenar los nodos del AST
+    double* valores;        // Para arrays
+    int tamano;             // Para el tamaño de los arrays
+    double** valores2d;     // Para arrays 2D
   }tr;
 }
 
 /*Declaración de los TOKENS*/
+%token ARRAY APERTURA_CORCHETE CIERRE_CORCHETE COMA
 %token SUMA RESTA MULTIPLICACION DIVISION IGUAL APERTURAPARENTESIS CIERREPARENTESIS IMPRIMIR IGUALREL NOIGUALREL MENORREL MAYORREL MENORIGUALREL MAYORIGUALREL ENDIF AND OR DOSPUNTOS IF ELSE
 
 /*Declaración de los TOKENS que provienen de FLEX con su respectivo tipo*/
@@ -49,7 +53,7 @@ int yylex(void);
 
 
 /*Declaración de los TOKENS NO TERMINALES con su estructura*/
-%type <tr> sentencias sentencia tipos expresion asignacion imprimir condicional logic_expr 
+%type <tr> sentencias sentencia tipos expresion asignacion imprimir condicional logic_expr array_declaration array_usage array_element array_elements array_2d_elements
 
 /*Declaración de la precedencia siendo menor la del primero y mayor la del último*/
 %left SUMA RESTA MULTIPLICACION DIVISION IGUALREL NOIGUALREL MENORREL MAYORREL MENORIGUALREL MAYORIGUALREL
@@ -94,7 +98,9 @@ sentencias:
 sentencia:   //Por defecto bison, asigna $1 a $$ por lo que no es obligatoria realizar la asignacion
     asignacion              
     | imprimir
-    | condicional       
+    | condicional
+    | array_declaration
+    | array_usage       
 ;
 
 //-------------------------------------------------------- ASIGNACION --------------------------------------------------------
@@ -127,6 +133,118 @@ asignacion:
     }
 ;
 
+//-------------------------------------------------------- ARRAY --------------------------------------------------------
+// Producción "declaración de array"
+array_declaration:
+    IDENTIFICADOR IGUAL APERTURA_CORCHETE array_elements CIERRE_CORCHETE {
+        printf("> [SENTENCIA] - Declaración de Array\n");
+        int size = $4.tamano;
+        double* values = $4.valores;
+        tabla[indice].nombre = $1;
+        tabla[indice].tipo = "array";
+        tabla[indice].array_size = size;
+        tabla[indice].array_values = values;
+        indice++;
+    }
+    | IDENTIFICADOR IGUAL APERTURA_CORCHETE array_2d_elements CIERRE_CORCHETE {
+        printf("> [SENTENCIA] - Declaración de Array 2D\n");
+        int size = $4.tamano;
+        double** values = $4.valores2d;
+        tabla[indice].nombre = $1;
+        tabla[indice].tipo = "array2d";
+        tabla[indice].array_size = size;
+        tabla[indice].array_values_2d = values;
+        indice++;
+    }
+;
+
+// Producción "uso de array"
+array_usage:
+    IDENTIFICADOR APERTURA_CORCHETE NUMERICO CIERRE_CORCHETE IGUAL expresion {
+        printf("> [SENTENCIA] - Uso de Array\n");
+        int pos = buscarTabla(indice, $1, tabla);
+        if (pos != -1 && strcmp(tabla[pos].tipo, "array") == 0) {
+            if ($3 < tabla[pos].array_size) {
+                tabla[pos].array_values[$3] = $6.n->valor;
+            } else {
+                yyerror("Índice fuera de rango");
+            }
+        } else {
+            yyerror("Variable no definida o no es un array");
+        }
+    }
+    | IDENTIFICADOR APERTURA_CORCHETE NUMERICO CIERRE_CORCHETE APERTURA_CORCHETE NUMERICO CIERRE_CORCHETE IGUAL expresion {
+        printf("> [SENTENCIA] - Uso de Array 2D\n");
+        int pos = buscarTabla(indice, $1, tabla);
+        if (pos != -1 && strcmp(tabla[pos].tipo, "array2d") == 0) {
+            if ($3 < tabla[pos].array_size && $6 < tabla[pos].array_size) {
+                tabla[pos].array_values_2d[$3][$6] = $9.n->valor;
+            } else {
+                yyerror("Índice fuera de rango");
+            }
+        } else {
+            yyerror("Variable no definida o no es un array 2D");
+        }
+    }
+;
+
+// Producción "elemento de array"
+array_element:
+    IDENTIFICADOR APERTURA_CORCHETE NUMERICO CIERRE_CORCHETE {
+        int pos = buscarTabla(indice, $1, tabla);
+        if (pos != -1 && strcmp(tabla[pos].tipo, "array") == 0) {
+            if ($3 < tabla[pos].array_size) {
+                $$.n = crearNodoTerminal(tabla[pos].array_values[$3]);
+            } else {
+                yyerror("Índice fuera de rango");
+            }
+        } else {
+            yyerror("Variable no definida o no es un array");
+        }
+    }
+    | IDENTIFICADOR APERTURA_CORCHETE NUMERICO CIERRE_CORCHETE APERTURA_CORCHETE NUMERICO CIERRE_CORCHETE {
+        int pos = buscarTabla(indice, $1, tabla);
+        if (pos != -1 && strcmp(tabla[pos].tipo, "array2d") == 0) {
+            if ($3 < tabla[pos].array_size && $6 < tabla[pos].array_size) {
+                $$.n = crearNodoTerminal(tabla[pos].array_values_2d[$3][$6]);
+            } else {
+                yyerror("Índice fuera de rango");
+            }
+        } else {
+            yyerror("Variable no definida o no es un array 2D");
+        }
+    }
+;
+
+// Producción "elementos de array"
+array_elements:
+    expresion {
+        $$.valores = malloc(sizeof(double));
+        $$.valores[0] = $1.n->valor;
+        $$.tamano = 1;
+    }
+    | array_elements COMA expresion {
+        int newSize = $1.tamano + 1;
+        $$.valores = realloc($1.valores, sizeof(double) * newSize);
+        $$.valores[$1.tamano] = $3.n->valor;
+        $$.tamano = newSize;
+    }
+;
+
+// Producción "elementos de array 2D"
+array_2d_elements:
+    APERTURA_CORCHETE array_elements CIERRE_CORCHETE {
+        $$.valores2d = malloc(sizeof(double*));
+        $$.valores2d[0] = $2.valores;
+        $$.tamano = 1;
+    }
+    | array_2d_elements COMA APERTURA_CORCHETE array_elements CIERRE_CORCHETE {
+        int newSize = $1.tamano + 1;
+        $$.valores2d = realloc($1.valores2d, sizeof(double*) * newSize);
+        $$.valores2d[$1.tamano] = $4.valores;
+        $$.tamano = newSize;
+    }
+;
 
 //-----------------------------------------------  EXPRESION ---------------------------------------------
 //PRODUCCION "expresion", en esta gramática se representa la suma, resta y otros terminos
@@ -205,6 +323,9 @@ expresion:
     }
     
     | tipos {$$ = $1;} //la produccion operacion puede ser tipos, un subnivel para realizar la jerarquia de operaciones
+    | array_element {
+        $$ = $1;
+    }
 ;
 
 //-----------------------------------------------  CONDICIONAL  ---------------------------------------------
@@ -215,9 +336,9 @@ condicional:
         printf("> Condicional IF\n");
         printf(" ---------------Resultado logico = %d\n", $3.n->boolean);
         if($3.n->boolean == 1){
-            $$.n = crearNodoIf($3.n, $6.n, crearNodoVacio());
+            $$.n=$6.n;
         }else{
-            $$.n = crearNodoIf($3.n, crearNodoVacio(), crearNodoVacio());
+            $$.n=crearNodoVacio();
         }
         
     }
@@ -225,10 +346,11 @@ condicional:
         printf("> Condicional IF-ELSE\n");
         printf(" ---------------Resultado logico = %d\n", $3.n->boolean);
         if($3.n->boolean == 1){
-            $$.n = crearNodoIf($3.n, $6.n, crearNodoVacio());
+            $$.n=$6.n;
         }else{
-            $$.n = crearNodoIf($3.n, crearNodoVacio(), $9.n);
+            $$.n=$9.n;
         }
+
         
     }
 ;
@@ -236,66 +358,74 @@ condicional:
 //-----------------------------------------------  EXPRESION LOGICA ---------------------------------------------
 // Definición de expresiones lógicas para el if
 logic_expr:
+
       expresion IGUALREL expresion {
+        $$.n = crearNodoNoTerminal($1.n, $3.n, 11); // 11 es el tipo de nodo para igualdad
         printf("--logic--> IGUALDAD\n");
-        if(strcmp($1.tipo, tipos[0]) == 0 && strcmp($3.tipo, tipos[0])){
-            printf("%d == %d ?/n", $1.numerico, $3.numerico);
+        if((strcmp($1.tipo, tipos[0]) == 0 ) && (strcmp($3.tipo, tipos[0])== 0)){
+            printf("%d == %d ?\n", $1.numerico, $3.numerico);
            if($1.numerico == $3.numerico){
                 $$.n->boolean = 1;
-                printf("TRUE");
+                printf("TRUE\n");
+                
             } else{
                 $$.n->boolean = 0;
-                printf("FALSE");
+                printf("FALSE\n");
             } 
-        }else if(strcmp($1.tipo, tipos[1]) == 0 && strcmp($3.tipo, tipos[1])){
+
+        }else if((strcmp($1.tipo, tipos[1]) == 0) && (strcmp($3.tipo, tipos[1])== 0)){
             printf("%.3f == %.3f ?/n", $1.numericoDecimal, $3.numericoDecimal);
            if($1.numericoDecimal == $3.numericoDecimal){
                 $$.n->boolean = 1;
-                printf("TRUE");
+                printf("TRUE\n");
             } else{
                 $$.n->boolean = 0;
-                printf("FALSE");
+                printf("FALSE\n");
             } 
         }else if(strcmp($1.tipo, tipos[2]) == 0 && strcmp($3.tipo, tipos[2])){
             printf("%s == %s ?/n", $1.cadena, $3.cadena);
            if($1.cadena == $3.cadena){
                 $$.n->boolean = 1;
-                printf("TRUE");
+                printf("TRUE\n");
             } else{
                 $$.n->boolean = 0;
-                printf("FALSE");
+                printf("FALSE\n");
             } 
-        }if((strcmp(tabla[buscarTabla(0,$1.n->cadena,tabla)].tipo,tipos[0]) == 0) && (strcmp(tabla[buscarTabla(0,$3.n->cadena,tabla)].tipo,tipos[0])==0)){
+        }else if((strcmp(tabla[buscarTabla(0,$1.n->cadena,tabla)].tipo,tipos[0]) == 0) && (strcmp(tabla[buscarTabla(0,$3.n->cadena,tabla)].tipo,tipos[0])==0)){
 
             if(tabla[buscarTabla(0,$1.n->cadena,tabla)].numerico == tabla[buscarTabla(0,$3.n->cadena,tabla)].numerico){
                 printf("%s == %s ?/n", $1.n->cadena, $3.n->cadena);
                 $$.n->boolean = 1;
-                printf("TRUE");
+                printf("TRUE\n");
             }else{
                 $$.n->boolean = 0;
-                printf("FALSE");
+                printf("FALSE\n");
             }
         }else if((strcmp(tabla[buscarTabla(0,$1.n->cadena,tabla)].tipo,tipos[1]) == 0) && (strcmp(tabla[buscarTabla(0,$3.n->cadena,tabla)].tipo,tipos[1])==0)){
             if(tabla[buscarTabla(0,$1.n->cadena,tabla)].numericoDecimal == tabla[buscarTabla(0,$3.n->cadena,tabla)].numericoDecimal){
                 printf("%s == %s ?/n", $1.n->cadena, $3.n->cadena);
                 $$.n->boolean = 1;
-                printf("TRUE");
+                printf("TRUE\n");
             }else{
                 $$.n->boolean = 0;
-                printf("FALSE");
+                printf("FALSE\n");
             }
         }else if((strcmp(tabla[buscarTabla(0,$1.n->cadena,tabla)].tipo,tipos[2]) == 0) && (strcmp(tabla[buscarTabla(0,$3.n->cadena,tabla)].tipo,tipos[2])==0)){
             if(tabla[buscarTabla(0,$1.n->cadena,tabla)].cadena == tabla[buscarTabla(0,$3.n->cadena,tabla)].cadena){
                 printf("%s == %s ?/n", $1.n->cadena, $3.n->cadena);
                 $$.n->boolean = 1;
-                printf("TRUE");
+                printf("TRUE\n");
             }else{
                 $$.n->boolean = 0;
-                printf("FALSE");
+                printf("FALSE\n");
             }
+
         }
+        printf("-------------------------------------------%d \n", $$.n->boolean); 
+
         
-        $$.n = crearNodoNoTerminal($1.n, $3.n, 11); // 11 es el tipo de nodo para igualdad
+        
+        
           
       }
     | expresion NOIGUALREL expresion {
@@ -388,7 +518,7 @@ tipos:
 //I --> print ( E ) 
 imprimir: 
     IMPRIMIR APERTURAPARENTESIS expresion CIERREPARENTESIS {
-        printf("> Funcion Imprimir");
+        printf("> Funcion Imprimir \n");
         $$.n = crearNodoNoTerminal($3.n, crearNodoVacio(), 4);        
     }
 ;

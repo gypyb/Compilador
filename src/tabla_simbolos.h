@@ -8,6 +8,10 @@ typedef struct {  //typedef para definir al final de la estructura el nombre tSi
     char *tipo;
     int registro;           //posicion
     char* cadena;           // Añadir el miembro cadena  
+    int array_size;
+    double* array_values;
+    double** array_values_2d;
+
 } tSimbolos;
 
 //Declaramos un array tabla con un tamaño por defecto de 256

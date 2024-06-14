@@ -38,30 +38,34 @@
    /* Put the tokens into the symbol table, so that GDB and other debuggers
       know about them.  */
    enum yytokentype {
-     SUMA = 258,
-     RESTA = 259,
-     MULTIPLICACION = 260,
-     DIVISION = 261,
-     IGUAL = 262,
-     APERTURAPARENTESIS = 263,
-     CIERREPARENTESIS = 264,
-     IMPRIMIR = 265,
-     IGUALREL = 266,
-     NOIGUALREL = 267,
-     MENORREL = 268,
-     MAYORREL = 269,
-     MENORIGUALREL = 270,
-     MAYORIGUALREL = 271,
-     ENDIF = 272,
-     AND = 273,
-     OR = 274,
-     DOSPUNTOS = 275,
-     IF = 276,
-     ELSE = 277,
-     NUMERICO = 278,
-     NUMERICODECIMAL = 279,
-     IDENTIFICADOR = 280,
-     CADENA = 281
+     ARRAY = 258,
+     APERTURA_CORCHETE = 259,
+     CIERRE_CORCHETE = 260,
+     COMA = 261,
+     SUMA = 262,
+     RESTA = 263,
+     MULTIPLICACION = 264,
+     DIVISION = 265,
+     IGUAL = 266,
+     APERTURAPARENTESIS = 267,
+     CIERREPARENTESIS = 268,
+     IMPRIMIR = 269,
+     IGUALREL = 270,
+     NOIGUALREL = 271,
+     MENORREL = 272,
+     MAYORREL = 273,
+     MENORIGUALREL = 274,
+     MAYORIGUALREL = 275,
+     ENDIF = 276,
+     AND = 277,
+     OR = 278,
+     DOSPUNTOS = 279,
+     IF = 280,
+     ELSE = 281,
+     NUMERICO = 282,
+     NUMERICODECIMAL = 283,
+     IDENTIFICADOR = 284,
+     CADENA = 285
    };
 #endif
 
@@ -84,12 +88,15 @@ typedef union YYSTYPE
     char* tipo;             //Define el tipo que se esta usando
     char* cadena;           // Añadir el miembro cadena
     struct ast *n;          //Para almacenar los nodos del AST
+    double* valores;        // Para arrays
+    int tamano;             // Para el tamaño de los arrays
+    double** valores2d;     // Para arrays 2D
   }tr;
 
 
 
 /* Line 1685 of yacc.c  */
-#line 93 "src/pyBis.h"
+#line 100 "src/pyBis.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

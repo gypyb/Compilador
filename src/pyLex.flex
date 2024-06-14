@@ -28,6 +28,10 @@ int num_linea = 1;
 ":"                                             return DOSPUNTOS;
 "("	                                            return APERTURAPARENTESIS;
 ")"	                                            return CIERREPARENTESIS;
+"array"                                         return ARRAY;
+"["                                             return APERTURA_CORCHETE;
+"]"                                             return CIERRE_CORCHETE;
+","                                             return COMA;
 imprimir|escribir|print                         return IMPRIMIR;
 [0-9]+                                          {yylval.enteroVal = atoi(yytext); return NUMERICO;}
 [0-9]+.[0-9]+                                   {yylval.realVal   = atof(yytext); return NUMERICODECIMAL;}
