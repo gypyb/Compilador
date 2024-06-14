@@ -135,28 +135,32 @@ asignacion:
 
 //-------------------------------------------------------- ARRAY --------------------------------------------------------
 // Producción "declaración de array"
+// Producción "declaración de array"
 array_declaration:
     IDENTIFICADOR IGUAL APERTURA_CORCHETE array_elements CIERRE_CORCHETE {
-        printf("> [SENTENCIA] - Declaración de Array\n");
+        printf("> [SENTENCIA] - Declaracion de Array\n");
         int size = $4.tamano;
         double* values = $4.valores;
         tabla[indice].nombre = $1;
         tabla[indice].tipo = "array";
         tabla[indice].array_size = size;
         tabla[indice].array_values = values;
+        $$.n = crearNodoArray(values, size);
         indice++;
     }
     | IDENTIFICADOR IGUAL APERTURA_CORCHETE array_2d_elements CIERRE_CORCHETE {
-        printf("> [SENTENCIA] - Declaración de Array 2D\n");
+        printf("> [SENTENCIA] - Declaracion de Array 2D\n");
         int size = $4.tamano;
         double** values = $4.valores2d;
         tabla[indice].nombre = $1;
         tabla[indice].tipo = "array2d";
         tabla[indice].array_size = size;
         tabla[indice].array_values_2d = values;
+        $$.n = crearNodoArray2D(values, size);
         indice++;
     }
 ;
+
 
 // Producción "uso de array"
 array_usage:
@@ -421,33 +425,323 @@ logic_expr:
             }
 
         }
-        printf("-------------------------------------------%d \n", $$.n->boolean); 
-
-        
-        
-        
-          
       }
     | expresion NOIGUALREL expresion {
           printf("--logic--> DESIGUALDAD\n");
-          $$.n = crearNodoNoTerminal($1.n, $3.n, 12); // 12 es el tipo de nodo para desigualdad
+        $$.n = crearNodoNoTerminal($1.n, $3.n, 12); // 11 es el tipo de nodo para igualdad
+        if((strcmp($1.tipo, tipos[0]) == 0 ) && (strcmp($3.tipo, tipos[0])== 0)){
+            printf("%d != %d ?\n", $1.numerico, $3.numerico);
+           if($1.numerico != $3.numerico){
+                $$.n->boolean = 1;
+                printf("TRUE\n");
+                
+            } else{
+                $$.n->boolean = 0;
+                printf("FALSE\n");
+            } 
+
+        }else if((strcmp($1.tipo, tipos[1]) == 0) && (strcmp($3.tipo, tipos[1])== 0)){
+            printf("%.3f != %.3f ?/n", $1.numericoDecimal, $3.numericoDecimal);
+           if($1.numericoDecimal != $3.numericoDecimal){
+                $$.n->boolean = 1;
+                printf("TRUE\n");
+            } else{
+                $$.n->boolean = 0;
+                printf("FALSE\n");
+            } 
+        }else if(strcmp($1.tipo, tipos[2]) == 0 && strcmp($3.tipo, tipos[2])){
+            printf("%s != %s ?/n", $1.cadena, $3.cadena);
+           if($1.cadena != $3.cadena){
+                $$.n->boolean = 1;
+                printf("TRUE\n");
+            } else{
+                $$.n->boolean = 0;
+                printf("FALSE\n");
+            } 
+        }else if((strcmp(tabla[buscarTabla(0,$1.n->cadena,tabla)].tipo,tipos[0]) == 0) && (strcmp(tabla[buscarTabla(0,$3.n->cadena,tabla)].tipo,tipos[0])==0)){
+
+            if(tabla[buscarTabla(0,$1.n->cadena,tabla)].numerico != tabla[buscarTabla(0,$3.n->cadena,tabla)].numerico){
+                printf("%s != %s ?/n", $1.n->cadena, $3.n->cadena);
+                $$.n->boolean = 1;
+                printf("TRUE\n");
+            }else{
+                $$.n->boolean = 0;
+                printf("FALSE\n");
+            }
+        }else if((strcmp(tabla[buscarTabla(0,$1.n->cadena,tabla)].tipo,tipos[1]) == 0) && (strcmp(tabla[buscarTabla(0,$3.n->cadena,tabla)].tipo,tipos[1])==0)){
+            if(tabla[buscarTabla(0,$1.n->cadena,tabla)].numericoDecimal != tabla[buscarTabla(0,$3.n->cadena,tabla)].numericoDecimal){
+                printf("%s != %s ?/n", $1.n->cadena, $3.n->cadena);
+                $$.n->boolean = 1;
+                printf("TRUE\n");
+            }else{
+                $$.n->boolean = 0;
+                printf("FALSE\n");
+            }
+        }else if((strcmp(tabla[buscarTabla(0,$1.n->cadena,tabla)].tipo,tipos[2]) == 0) && (strcmp(tabla[buscarTabla(0,$3.n->cadena,tabla)].tipo,tipos[2])==0)){
+            if(tabla[buscarTabla(0,$1.n->cadena,tabla)].cadena != tabla[buscarTabla(0,$3.n->cadena,tabla)].cadena){
+                printf("%s != %s ?/n", $1.n->cadena, $3.n->cadena);
+                $$.n->boolean = 1;
+                printf("TRUE\n");
+            }else{
+                $$.n->boolean = 0;
+                printf("FALSE\n");
+            }
+
+        }
       }
     | expresion MENORREL expresion {
-          printf("--logic--> MENOR QUE\n");
-          $$.n = crearNodoNoTerminal($1.n, $3.n, 13); // 13 es el tipo de nodo para menor que
+        printf("--logic--> MENOR QUE\n");
+        $$.n = crearNodoNoTerminal($1.n, $3.n, 13); // 13 es el tipo de nodo para menor que
+        if((strcmp($1.tipo, tipos[0]) == 0 ) && (strcmp($3.tipo, tipos[0])== 0)){
+            printf("%d < %d ?\n", $1.numerico, $3.numerico);
+           if($1.numerico < $3.numerico){
+                $$.n->boolean = 1;
+                printf("TRUE\n");
+                
+            } else{
+                $$.n->boolean = 0;
+                printf("FALSE\n");
+            } 
+
+        }else if((strcmp($1.tipo, tipos[1]) == 0) && (strcmp($3.tipo, tipos[1])== 0)){
+            printf("%.3f < %.3f ?/n", $1.numericoDecimal, $3.numericoDecimal);
+           if($1.numericoDecimal < $3.numericoDecimal){
+                $$.n->boolean = 1;
+                printf("TRUE\n");
+            } else{
+                $$.n->boolean = 0;
+                printf("FALSE\n");
+            } 
+        }else if(strcmp($1.tipo, tipos[2]) == 0 && strcmp($3.tipo, tipos[2])){
+            printf("%s < %s ?/n", $1.cadena, $3.cadena);
+           if($1.cadena < $3.cadena){
+                $$.n->boolean = 1;
+                printf("TRUE\n");
+            } else{
+                $$.n->boolean = 0;
+                printf("FALSE\n");
+            } 
+        }else if((strcmp(tabla[buscarTabla(0,$1.n->cadena,tabla)].tipo,tipos[0]) == 0) && (strcmp(tabla[buscarTabla(0,$3.n->cadena,tabla)].tipo,tipos[0])==0)){
+
+            if(tabla[buscarTabla(0,$1.n->cadena,tabla)].numerico < tabla[buscarTabla(0,$3.n->cadena,tabla)].numerico){
+                printf("%s < %s ?/n", $1.n->cadena, $3.n->cadena);
+                $$.n->boolean = 1;
+                printf("TRUE\n");
+            }else{
+                $$.n->boolean = 0;
+                printf("FALSE\n");
+            }
+        }else if((strcmp(tabla[buscarTabla(0,$1.n->cadena,tabla)].tipo,tipos[1]) == 0) && (strcmp(tabla[buscarTabla(0,$3.n->cadena,tabla)].tipo,tipos[1])==0)){
+            if(tabla[buscarTabla(0,$1.n->cadena,tabla)].numericoDecimal < tabla[buscarTabla(0,$3.n->cadena,tabla)].numericoDecimal){
+                printf("%s < %s ?/n", $1.n->cadena, $3.n->cadena);
+                $$.n->boolean = 1;
+                printf("TRUE\n");
+            }else{
+                $$.n->boolean = 0;
+                printf("FALSE\n");
+            }
+        }else if((strcmp(tabla[buscarTabla(0,$1.n->cadena,tabla)].tipo,tipos[2]) == 0) && (strcmp(tabla[buscarTabla(0,$3.n->cadena,tabla)].tipo,tipos[2])==0)){
+            if(tabla[buscarTabla(0,$1.n->cadena,tabla)].cadena < tabla[buscarTabla(0,$3.n->cadena,tabla)].cadena){
+                printf("%s < %s ?/n", $1.n->cadena, $3.n->cadena);
+                $$.n->boolean = 1;
+                printf("TRUE\n");
+            }else{
+                $$.n->boolean = 0;
+                printf("FALSE\n");
+            }
+
+        }
       }
     | expresion MAYORREL expresion {
           printf("--logic--> MAYOR QUE\n");
           $$.n = crearNodoNoTerminal($1.n, $3.n, 14); // 14 es el tipo de nodo para mayor que
+          if((strcmp($1.tipo, tipos[0]) == 0 ) && (strcmp($3.tipo, tipos[0])== 0)){
+            printf("%d > %d ?\n", $1.numerico, $3.numerico);
+           if($1.numerico > $3.numerico){
+                $$.n->boolean = 1;
+                printf("TRUE\n");
+                
+            } else{
+                $$.n->boolean = 0;
+                printf("FALSE\n");
+            } 
+
+        }else if((strcmp($1.tipo, tipos[1]) == 0) && (strcmp($3.tipo, tipos[1])== 0)){
+            printf("%.3f > %.3f ?/n", $1.numericoDecimal, $3.numericoDecimal);
+           if($1.numericoDecimal > $3.numericoDecimal){
+                $$.n->boolean = 1;
+                printf("TRUE\n");
+            } else{
+                $$.n->boolean = 0;
+                printf("FALSE\n");
+            } 
+        }else if(strcmp($1.tipo, tipos[2]) == 0 && strcmp($3.tipo, tipos[2])){
+            printf("%s > %s ?/n", $1.cadena, $3.cadena);
+           if($1.cadena > $3.cadena){
+                $$.n->boolean = 1;
+                printf("TRUE\n");
+            } else{
+                $$.n->boolean = 0;
+                printf("FALSE\n");
+            } 
+        }else if((strcmp(tabla[buscarTabla(0,$1.n->cadena,tabla)].tipo,tipos[0]) == 0) && (strcmp(tabla[buscarTabla(0,$3.n->cadena,tabla)].tipo,tipos[0])==0)){
+
+            if(tabla[buscarTabla(0,$1.n->cadena,tabla)].numerico > tabla[buscarTabla(0,$3.n->cadena,tabla)].numerico){
+                printf("%s > %s ?/n", $1.n->cadena, $3.n->cadena);
+                $$.n->boolean = 1;
+                printf("TRUE\n");
+            }else{
+                $$.n->boolean = 0;
+                printf("FALSE\n");
+            }
+        }else if((strcmp(tabla[buscarTabla(0,$1.n->cadena,tabla)].tipo,tipos[1]) == 0) && (strcmp(tabla[buscarTabla(0,$3.n->cadena,tabla)].tipo,tipos[1])==0)){
+            if(tabla[buscarTabla(0,$1.n->cadena,tabla)].numericoDecimal > tabla[buscarTabla(0,$3.n->cadena,tabla)].numericoDecimal){
+                printf("%s > %s ?/n", $1.n->cadena, $3.n->cadena);
+                $$.n->boolean = 1;
+                printf("TRUE\n");
+            }else{
+                $$.n->boolean = 0;
+                printf("FALSE\n");
+            }
+        }else if((strcmp(tabla[buscarTabla(0,$1.n->cadena,tabla)].tipo,tipos[2]) == 0) && (strcmp(tabla[buscarTabla(0,$3.n->cadena,tabla)].tipo,tipos[2])==0)){
+            if(tabla[buscarTabla(0,$1.n->cadena,tabla)].cadena > tabla[buscarTabla(0,$3.n->cadena,tabla)].cadena){
+                printf("%s > %s ?/n", $1.n->cadena, $3.n->cadena);
+                $$.n->boolean = 1;
+                printf("TRUE\n");
+            }else{
+                $$.n->boolean = 0;
+                printf("FALSE\n");
+            }
+
+        }
       }
     | expresion MENORIGUALREL expresion {
           printf("--logic--> MENOR O IGUAL QUE\n");
           $$.n = crearNodoNoTerminal($1.n, $3.n, 15); // 15 es el tipo de nodo para menor o igual que
+          if((strcmp($1.tipo, tipos[0]) == 0 ) && (strcmp($3.tipo, tipos[0])== 0)){
+            printf("%d <= %d ?\n", $1.numerico, $3.numerico);
+           if($1.numerico <= $3.numerico){
+                $$.n->boolean = 1;
+                printf("TRUE\n");
+                
+            } else{
+                $$.n->boolean = 0;
+                printf("FALSE\n");
+            } 
+
+        }else if((strcmp($1.tipo, tipos[1]) == 0) && (strcmp($3.tipo, tipos[1])== 0)){
+            printf("%.3f <= %.3f ?/n", $1.numericoDecimal, $3.numericoDecimal);
+           if($1.numericoDecimal <= $3.numericoDecimal){
+                $$.n->boolean = 1;
+                printf("TRUE\n");
+            } else{
+                $$.n->boolean = 0;
+                printf("FALSE\n");
+            } 
+        }else if(strcmp($1.tipo, tipos[2]) == 0 && strcmp($3.tipo, tipos[2])){
+            printf("%s <= %s ?/n", $1.cadena, $3.cadena);
+           if($1.cadena <= $3.cadena){
+                $$.n->boolean = 1;
+                printf("TRUE\n");
+            } else{
+                $$.n->boolean = 0;
+                printf("FALSE\n");
+            } 
+        }else if((strcmp(tabla[buscarTabla(0,$1.n->cadena,tabla)].tipo,tipos[0]) == 0) && (strcmp(tabla[buscarTabla(0,$3.n->cadena,tabla)].tipo,tipos[0])==0)){
+
+            if(tabla[buscarTabla(0,$1.n->cadena,tabla)].numerico <= tabla[buscarTabla(0,$3.n->cadena,tabla)].numerico){
+                printf("%s <= %s ?/n", $1.n->cadena, $3.n->cadena);
+                $$.n->boolean = 1;
+                printf("TRUE\n");
+            }else{
+                $$.n->boolean = 0;
+                printf("FALSE\n");
+            }
+        }else if((strcmp(tabla[buscarTabla(0,$1.n->cadena,tabla)].tipo,tipos[1]) == 0) && (strcmp(tabla[buscarTabla(0,$3.n->cadena,tabla)].tipo,tipos[1])==0)){
+            if(tabla[buscarTabla(0,$1.n->cadena,tabla)].numericoDecimal <= tabla[buscarTabla(0,$3.n->cadena,tabla)].numericoDecimal){
+                printf("%s <= %s ?/n", $1.n->cadena, $3.n->cadena);
+                $$.n->boolean = 1;
+                printf("TRUE\n");
+            }else{
+                $$.n->boolean = 0;
+                printf("FALSE\n");
+            }
+        }else if((strcmp(tabla[buscarTabla(0,$1.n->cadena,tabla)].tipo,tipos[2]) == 0) && (strcmp(tabla[buscarTabla(0,$3.n->cadena,tabla)].tipo,tipos[2])==0)){
+            if(tabla[buscarTabla(0,$1.n->cadena,tabla)].cadena <= tabla[buscarTabla(0,$3.n->cadena,tabla)].cadena){
+                printf("%s <= %s ?/n", $1.n->cadena, $3.n->cadena);
+                $$.n->boolean = 1;
+                printf("TRUE\n");
+            }else{
+                $$.n->boolean = 0;
+                printf("FALSE\n");
+            }
+
+        }
       }
     | expresion MAYORIGUALREL expresion {
           printf("--logic--> MAYOR O IGUAL QUE\n");
           $$.n = crearNodoNoTerminal($1.n, $3.n, 16); // 16 es el tipo de nodo para mayor o igual que
+          if((strcmp($1.tipo, tipos[0]) == 0 ) && (strcmp($3.tipo, tipos[0])== 0)){
+            printf("%d >= %d ?\n", $1.numerico, $3.numerico);
+           if($1.numerico >= $3.numerico){
+                $$.n->boolean = 1;
+                printf("TRUE\n");
+                
+            } else{
+                $$.n->boolean = 0;
+                printf("FALSE\n");
+            } 
+
+        }else if((strcmp($1.tipo, tipos[1]) == 0) && (strcmp($3.tipo, tipos[1])== 0)){
+            printf("%.3f >= %.3f ?/n", $1.numericoDecimal, $3.numericoDecimal);
+           if($1.numericoDecimal >= $3.numericoDecimal){
+                $$.n->boolean = 1;
+                printf("TRUE\n");
+            } else{
+                $$.n->boolean = 0;
+                printf("FALSE\n");
+            } 
+        }else if(strcmp($1.tipo, tipos[2]) == 0 && strcmp($3.tipo, tipos[2])){
+            printf("%s >= %s ?/n", $1.cadena, $3.cadena);
+           if($1.cadena >= $3.cadena){
+                $$.n->boolean = 1;
+                printf("TRUE\n");
+            } else{
+                $$.n->boolean = 0;
+                printf("FALSE\n");
+            } 
+        }else if((strcmp(tabla[buscarTabla(0,$1.n->cadena,tabla)].tipo,tipos[0]) == 0) && (strcmp(tabla[buscarTabla(0,$3.n->cadena,tabla)].tipo,tipos[0])==0)){
+
+            if(tabla[buscarTabla(0,$1.n->cadena,tabla)].numerico >= tabla[buscarTabla(0,$3.n->cadena,tabla)].numerico){
+                printf("%s >= %s ?/n", $1.n->cadena, $3.n->cadena);
+                $$.n->boolean = 1;
+                printf("TRUE\n");
+            }else{
+                $$.n->boolean = 0;
+                printf("FALSE\n");
+            }
+        }else if((strcmp(tabla[buscarTabla(0,$1.n->cadena,tabla)].tipo,tipos[1]) == 0) && (strcmp(tabla[buscarTabla(0,$3.n->cadena,tabla)].tipo,tipos[1])==0)){
+            if(tabla[buscarTabla(0,$1.n->cadena,tabla)].numericoDecimal >= tabla[buscarTabla(0,$3.n->cadena,tabla)].numericoDecimal){
+                printf("%s >= %s ?/n", $1.n->cadena, $3.n->cadena);
+                $$.n->boolean = 1;
+                printf("TRUE\n");
+            }else{
+                $$.n->boolean = 0;
+                printf("FALSE\n");
+            }
+        }else if((strcmp(tabla[buscarTabla(0,$1.n->cadena,tabla)].tipo,tipos[2]) == 0) && (strcmp(tabla[buscarTabla(0,$3.n->cadena,tabla)].tipo,tipos[2])==0)){
+            if(tabla[buscarTabla(0,$1.n->cadena,tabla)].cadena >= tabla[buscarTabla(0,$3.n->cadena,tabla)].cadena){
+                printf("%s >= %s ?/n", $1.n->cadena, $3.n->cadena);
+                $$.n->boolean = 1;
+                printf("TRUE\n");
+            }else{
+                $$.n->boolean = 0;
+                printf("FALSE\n");
+            }
+
+        }
       }
+      
     | expresion AND expresion {
           printf("--logic--> AND\n");
           $$.n = crearNodoNoTerminal($1.n, $3.n, 17); // 17 es el tipo de nodo para AND

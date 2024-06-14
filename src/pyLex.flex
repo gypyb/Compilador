@@ -39,4 +39,8 @@ _?[a-zA-Z0-9]+		                            {yylval.stringVal = strdup(yytext); 
 \"([^\\"]|\\.)*\"                               { yylval.stringVal = strdup(yytext); return CADENA; }
 \n		                                        {num_linea++;} //Incrementa el numero de linea para saber en que num_linea se encuentra
 
+"//".*                                          // Ignorar comentarios de una línea
+"/*"([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*"*"+"/"   // Ignorar comentarios de múltiples líneas
+
+
 %%

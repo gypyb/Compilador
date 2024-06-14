@@ -45,6 +45,8 @@ struct ast
   int boolean;
   int nombreVar;       // Indica el nombre de la variable
   char *cadena;
+  double* valores;     // Para arrays
+  double** valores2d;  // Para arrays 2D
 };
 
 // Declaración de funciones
@@ -194,8 +196,25 @@ double comprobarValorNodo(struct ast *n, int contadorEtiquetaLocal)
     } else if (n->dcha) {
         comprobarValorNodo(n->dcha, contadorEtiquetaLocal); // Bloque "else"
     }
+    
+  //TIPO NODO 20 - Array
+  } else if (n->tipoNodo == 20) {
+    // Implementación específica para arrays si es necesario
+    // Guardar los valores del array en registros
+    for (int i = 0; i < variables[n->nombreVar].array_size; i++) {
+        fprintf(yyout, "lwc1 $f%d, var_%d[%d]\n", n->resultado, n->nombreVar, i);
+    }
+
+  //TIPO NODO 21 - Array 2D
+  } else if (n->tipoNodo == 21) {
+    // Implementación específica para arrays 2D si es necesario
+    // Guardar los valores del array 2D en registros
+    for (int i = 0; i < variables[n->nombreVar].array_size; i++) {
+        for (int j = 0; j < variables[n->nombreVar].array_size; j++) {
+            fprintf(yyout, "lwc1 $f%d, var_%d[%d][%d]\n", n->resultado, n->nombreVar, i, j);
+        }
+    }
   }
-  
   return dato; //Devolvemos el valor
 }
 
@@ -330,7 +349,23 @@ struct ast *crearNodoIf(struct ast *condicion, struct ast *entonces, struct ast 
     n->dcha = sino;
     return n;
 }
+// METODO "crearNodoArray", crea un nuevo nodo array en el arbol AST
+struct ast *crearNodoArray(double* valores, int tamano) {
+    struct ast *n = malloc(sizeof(struct ast));
+    n->tipoNodo = 20; // Tipo de nodo para array
+    n->valores = valores;
+    n->boolean = tamano;
+    return n;
+}
 
+// METODO "crearNodoArray2D", crea un nuevo nodo array 2D en el arbol AST
+struct ast *crearNodoArray2D(double** valores2d, int tamano) {
+    struct ast *n = malloc(sizeof(struct ast));
+    n->tipoNodo = 21; // Tipo de nodo para array 2D
+    n->valores2d = valores2d;
+    n->boolean = tamano;
+    return n;
+}
 // METODO "crearNodoConcatenacion", crea un nuevo nodo de concatenación en el arbol AST
 struct ast *crearNodoConcatenacion(struct ast *izq, struct ast *dcha) {
     struct ast *n = malloc(sizeof(struct ast));
