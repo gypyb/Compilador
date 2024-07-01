@@ -1,0 +1,14 @@
+suma = 1 + 3
+print(suma)
+resta = 11 - 1
+print(resta)
+
+if(resta == 10):
+    print(suma)
+else:
+    print(resta)
+finIf
+
+for i in range (suma):
+    print(77)
+finFor
