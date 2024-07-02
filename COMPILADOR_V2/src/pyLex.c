@@ -383,15 +383,15 @@ struct yy_trans_info
 	};
 static yyconst flex_int16_t yy_accept[91] =
     {   0,
-        0,    0,   40,   39,   38,   37,   39,   39,   30,    5,
-        6,    4,    1,   29,    2,    3,   34,   16,   12,   15,
-       11,   36,    7,    8,   36,   36,   36,   36,   36,   36,
-       36,   36,   36,   14,    0,   32,   30,    0,   34,   36,
-       10,   13,    9,   36,   36,   36,   36,   36,   25,   23,
-       18,   36,   36,   36,   32,    0,   35,   34,   35,   17,
-       36,   36,   36,   21,   36,   36,   36,    0,    0,   26,
-       27,   36,   36,   36,   36,   36,   36,    0,   36,   28,
-       36,   33,   24,   19,   31,   22,   36,   36,   20,    0
+        0,    0,   40,   39,   36,   35,   39,   39,   37,   25,
+       26,    3,    1,   29,    2,    4,   31,   24,    8,    5,
+        9,   33,   27,   28,   33,   33,   33,   33,   33,   33,
+       33,   33,   33,    7,    0,   34,   37,    0,   31,   33,
+       10,    6,   11,   33,   33,   33,   33,   33,   12,   22,
+       17,   33,   33,   33,   34,    0,   32,   31,   32,   16,
+       33,   33,   33,   20,   33,   33,   33,    0,    0,   13,
+       14,   33,   33,   33,   33,   33,   33,    0,   33,   15,
+       33,   30,   23,   18,   38,   21,   33,   33,   19,    0
     } ;
 
 static yyconst flex_int32_t yy_ec[256] =
@@ -531,7 +531,8 @@ char *yytext;
 #include "pyBis.h"
 extern YYSTYPE yylval;
 int num_linea = 1; 
-#line 535 "src/pyLex.c"
+
+#line 536 "src/pyLex.c"
 
 #define INITIAL 0
 
@@ -718,8 +719,7 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
     
-#line 9 "src/pyLex.flex"
-
+#line 10 "src/pyLex.flex"
 
 
 #line 726 "src/pyLex.c"
@@ -817,189 +817,189 @@ return RESTA;
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 15 "src/pyLex.flex"
-return DIVISION;
+#line 14 "src/pyLex.flex"
+return MULTIPLICACION; 
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 16 "src/pyLex.flex"
-return MULTIPLICACION;
+#line 15 "src/pyLex.flex"
+return DIVISION; 
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 17 "src/pyLex.flex"
-return APERTURAPARENTESIS;
+#line 16 "src/pyLex.flex"
+return IGUAL;
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 18 "src/pyLex.flex"
-return CIERREPARENTESIS;
+#line 17 "src/pyLex.flex"
+return IGUALREL; 
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 19 "src/pyLex.flex"
-return APERTURACORCHETE;
+#line 18 "src/pyLex.flex"
+return NOIGUALREL; 
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 20 "src/pyLex.flex"
-return CIERRECORCHETE;
+#line 19 "src/pyLex.flex"
+return MENORREL; 
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 22 "src/pyLex.flex"
-return MAYOR_IGUAL_QUE;
+#line 20 "src/pyLex.flex"
+return MAYORREL; 
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 23 "src/pyLex.flex"
-return MENOR_IGUAL_QUE;
+#line 21 "src/pyLex.flex"
+return MENORIGUALREL; 
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 24 "src/pyLex.flex"
-return MAYOR_QUE;
+#line 22 "src/pyLex.flex"
+return MAYORIGUALREL; 
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 25 "src/pyLex.flex"
-return MENOR_QUE;
+#line 23 "src/pyLex.flex"
+return IF;           
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 27 "src/pyLex.flex"
-return IGUAL_IGUAL;
+#line 24 "src/pyLex.flex"
+return ELIF; 
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 28 "src/pyLex.flex"
-return NO_IGUAL;
+#line 25 "src/pyLex.flex"
+return ELSE; 
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 29 "src/pyLex.flex"
-return IGUAL;
+#line 26 "src/pyLex.flex"
+return ENDIF;
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 31 "src/pyLex.flex"
-return DOSPUNTOS;
+#line 27 "src/pyLex.flex"
+return AND; 
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 32 "src/pyLex.flex"
-return AND;
+#line 28 "src/pyLex.flex"
+return OR;
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 33 "src/pyLex.flex"
-return OR;
+#line 29 "src/pyLex.flex"
+return WHILE;
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 34 "src/pyLex.flex"
-return WHILE;
+#line 30 "src/pyLex.flex"
+return ENDWHILE;
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 35 "src/pyLex.flex"
-return FIN_BUCLE;
+#line 31 "src/pyLex.flex"
+return FOR;
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 36 "src/pyLex.flex"
-return FOR_BUCLE;
+#line 32 "src/pyLex.flex"
+return ENDFOR;
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 37 "src/pyLex.flex"
-return FIN_FOR;
+#line 33 "src/pyLex.flex"
+return IN;
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 38 "src/pyLex.flex"
-return IN;
+#line 34 "src/pyLex.flex"
+return RANGE;
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 39 "src/pyLex.flex"
-return RANGE;
+#line 35 "src/pyLex.flex"
+return DOSPUNTOS;
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 40 "src/pyLex.flex"
-return IF_CONDICION;
+#line 36 "src/pyLex.flex"
+return APERTURAPARENTESIS;
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 41 "src/pyLex.flex"
-return ELIF_CONDICION;
+#line 37 "src/pyLex.flex"
+return CIERREPARENTESIS;
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 42 "src/pyLex.flex"
-return ELSE_CONDICION;
+#line 38 "src/pyLex.flex"
+return APERTURACORCHETE;
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 43 "src/pyLex.flex"
-return FIN_CONDICION;
+#line 39 "src/pyLex.flex"
+return CIERRECORCHETE;
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 44 "src/pyLex.flex"
+#line 40 "src/pyLex.flex"
 return COMA;
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 46 "src/pyLex.flex"
-
+#line 41 "src/pyLex.flex"
+return IMPRIMIR;
 	YY_BREAK
 case 31:
-/* rule 31 can match eol */
 YY_RULE_SETUP
-#line 47 "src/pyLex.flex"
-{ int num_newlines = 0; char *p; for (p = yytext; *p; p++) { if (*p == '\n') { num_newlines++; } } int old_number = num_linea; num_linea += num_newlines; }
+#line 42 "src/pyLex.flex"
+{yylval.enteroVal = atoi(yytext); return NUMERICO;}
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 48 "src/pyLex.flex"
-{yylval.stringVal = strdup(yytext + 1); yylval.stringVal[strlen(yylval.stringVal) - 1] = '\0'; printf(yytext);return CADENA;}
+#line 43 "src/pyLex.flex"
+{yylval.realVal   = atof(yytext); return NUMERICODECIMAL;}
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 50 "src/pyLex.flex"
-return IMPRIMIR;
+#line 44 "src/pyLex.flex"
+{yylval.stringVal = strdup(yytext); return IDENTIFICADOR;}
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 51 "src/pyLex.flex"
-{yylval.enteroVal = atoi(yytext); return NUMERICO;}
+#line 45 "src/pyLex.flex"
+{yylval.stringVal = strdup(yytext + 1); yylval.stringVal[strlen(yylval.stringVal) - 1] = '\0'; printf(yytext);return CADENA;}
 	YY_BREAK
 case 35:
+/* rule 35 can match eol */
 YY_RULE_SETUP
-#line 52 "src/pyLex.flex"
-{yylval.realVal   = atof(yytext); return NUMERICODECIMAL;}
+#line 46 "src/pyLex.flex"
+{ printf("\n--------------- Linea de codigo %d ----------------\n\n", num_linea); num_linea++;}
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 53 "src/pyLex.flex"
-{yylval.stringVal = strdup(yytext); return IDENTIFICADOR;}
+#line 47 "src/pyLex.flex"
+{ /* no se hace nada */ }
 	YY_BREAK
 case 37:
-/* rule 37 can match eol */
 YY_RULE_SETUP
-#line 56 "src/pyLex.flex"
-{ printf("\n--------------- Linea de codigo %d ----------------\n\n", num_linea); num_linea++;}
+#line 49 "src/pyLex.flex"
+// Ignorar comentarios de una línea
 	YY_BREAK
 case 38:
+/* rule 38 can match eol */
 YY_RULE_SETUP
-#line 57 "src/pyLex.flex"
-{ /* no se hace nada */ }
+#line 50 "src/pyLex.flex"
+{ int num_newlines = 0; char *p; for (p = yytext; *p; p++) { if (*p == '\n') { num_newlines++; } } int old_number = num_linea; num_linea += num_newlines; }
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 60 "src/pyLex.flex"
+#line 52 "src/pyLex.flex"
 ECHO;
 	YY_BREAK
 #line 1006 "src/pyLex.c"
@@ -2000,7 +2000,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 60 "src/pyLex.flex"
+#line 52 "src/pyLex.flex"
 
 
 

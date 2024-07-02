@@ -48,7 +48,7 @@ int array_count = 0;
 }
 
 /*Declaración de los TOKENS*/
-%token SUMA RESTA MULTIPLICACION DIVISION IGUAL APERTURAPARENTESIS CIERREPARENTESIS APERTURACORCHETE CIERRECORCHETE IMPRIMIR MAYOR_QUE MENOR_QUE MAYOR_IGUAL_QUE MENOR_IGUAL_QUE IGUAL_IGUAL NO_IGUAL AND OR WHILE FIN_BUCLE DOSPUNTOS FOR_BUCLE FIN_FOR IN RANGE COMA IF_CONDICION ELIF_CONDICION ELSE_CONDICION FIN_CONDICION
+%token SUMA RESTA MULTIPLICACION DIVISION IGUAL APERTURAPARENTESIS CIERREPARENTESIS APERTURACORCHETE CIERRECORCHETE IMPRIMIR MAYORREL MENORREL MAYORIGUALREL MENORIGUALREL IGUALREL NOIGUALREL AND OR WHILE ENDWHILE DOSPUNTOS FOR ENDFOR IN RANGE COMA IF ELIF ELSE ENDIF
 
 /*Declaración de los TOKENS que provienen de FLEX con su respectivo tipo*/
 %token <enteroVal> NUMERICO 
@@ -62,7 +62,7 @@ int array_count = 0;
 %type <valores> elements  
 
 /*Declaración de la precedencia siendo menor la del primero y mayor la del último*/
-%left SUMA RESTA MULTIPLICACION DIVISION MAYOR_QUE MENOR_QUE MAYOR_IGUAL_QUE MENOR_IGUAL_QUE AND OR IGUAL_IGUAL NO_IGUAL
+%left SUMA RESTA MULTIPLICACION DIVISION MAYORREL MENORREL MAYORIGUALREL MENORIGUALREL AND OR IGUALREL NOIGUALREL
 
 
 %start codigo
@@ -302,19 +302,19 @@ expresion:
             printf("Linea de ERROR: %d\n", num_linea);
         }
     }
-    //MAYOR_QUE
-    | expresion MAYOR_QUE tipos {
+    //MAYORREL
+    | expresion MAYORREL tipos {
         
-        //MAYOR_QUE de numerico > numerico
+        //MAYORREL de numerico > numerico
         if (strcmp($1.tipo, tipos[0]) == 0 && strcmp($3.tipo, tipos[0]) == 0) {  //comprobacion del tipo
-            printf("> --logic--> MAYOR_QUE {numerico / numerico}\n");
+            printf("> --logic--> MAYORREL {numerico / numerico}\n");
             $$.n = crearNodoNoTerminal($1.n, $3.n, 10);
             $$.tipo = tipos[0]; 
             $$.numerico = $1.numerico > $3.numerico;
         }
-        //MAYOR_QUE de numericoDecimal > numericoDecimal
+        //MAYORREL de numericoDecimal > numericoDecimal
         else if (strcmp($1.tipo, tipos[1]) == 0 && strcmp($3.tipo, tipos[1]) == 0){  //comprobacion del tipo
-            printf("> --logic--> MAYOR_QUE {numericoDecimal / numericoDecimal}\n");
+            printf("> --logic--> MAYORREL {numericoDecimal / numericoDecimal}\n");
             $$.n = crearNodoNoTerminal($1.n, $3.n, 10);
             $$.tipo = tipos[1]; 
             $$.numericoDecimal = $1.numericoDecimal > $3.numericoDecimal;
@@ -325,19 +325,19 @@ expresion:
             printf("Linea de ERROR: %d\n", num_linea);
         }
     }
-    //MAYOR_IGUAL_QUE
-    | expresion MAYOR_IGUAL_QUE tipos {
+    //MAYORIGUALREL
+    | expresion MAYORIGUALREL tipos {
         
-        //MAYOR_IGUAL_QUE de numerico > numerico
+        //MAYORIGUALREL de numerico > numerico
         if (strcmp($1.tipo, tipos[0]) == 0 && strcmp($3.tipo, tipos[0]) == 0) {  //comprobacion del tipo
-            printf("> --logic--> MAYOR_IGUAL_QUE {numerico / numerico}\n");
+            printf("> --logic--> MAYORIGUALREL {numerico / numerico}\n");
             $$.n = crearNodoNoTerminal($1.n, $3.n, 11);
             $$.tipo = tipos[0]; 
             $$.numerico = $1.numerico >= $3.numerico;
         }
-        //MAYOR_IGUAL_QUE de numericoDecimal > numericoDecimal
+        //MAYORIGUALREL de numericoDecimal > numericoDecimal
         else if (strcmp($1.tipo, tipos[1]) == 0 && strcmp($3.tipo, tipos[1]) == 0){  //comprobacion del tipo
-            printf("> --logic--> MAYOR_IGUAL_QUE {numericoDecimal / numericoDecimal}\n");
+            printf("> --logic--> MAYORIGUALREL {numericoDecimal / numericoDecimal}\n");
             $$.n = crearNodoNoTerminal($1.n, $3.n, 11);
             $$.tipo = tipos[1]; 
             $$.numericoDecimal = $1.numericoDecimal >= $3.numericoDecimal;
@@ -348,19 +348,19 @@ expresion:
             printf("Linea de ERROR: %d\n", num_linea);
         }
     }
-    //MENOR_QUE
-    | expresion MENOR_QUE tipos {
+    //MENORREL
+    | expresion MENORREL tipos {
         
-        //MENOR_QUE de numerico > numerico
+        //MENORREL de numerico > numerico
         if (strcmp($1.tipo, tipos[0]) == 0 && strcmp($3.tipo, tipos[0]) == 0) {  //comprobacion del tipo
-            printf("> --logic--> MENOR QUE {numerico / numerico}\n");
+            printf("> --logic--> MENORREL {numerico / numerico}\n");
             $$.n = crearNodoNoTerminal($1.n, $3.n, 12);
             $$.tipo = tipos[0]; 
             $$.numerico = $1.numerico < $3.numerico;
         }
-        //MENOR_QUE de numericoDecimal > numericoDecimal
+        //MENORREL de numericoDecimal > numericoDecimal
         else if (strcmp($1.tipo, tipos[1]) == 0 && strcmp($3.tipo, tipos[1]) == 0){  //comprobacion del tipo
-            printf("> --logic--> MENOR QUE {numericoDecimal / numericoDecimal}\n");
+            printf("> --logic--> MENORREL {numericoDecimal / numericoDecimal}\n");
             $$.n = crearNodoNoTerminal($1.n, $3.n, 12);
             $$.tipo = tipos[1]; 
             $$.numericoDecimal = $1.numericoDecimal < $3.numericoDecimal;
@@ -371,19 +371,19 @@ expresion:
             printf("Linea de ERROR: %d\n", num_linea);
         }
     }
-    //MENOR_IGUAL_QUE
-    | expresion MENOR_IGUAL_QUE tipos {
+    //MENORIGUALREL
+    | expresion MENORIGUALREL tipos {
         
-        //MENOR_IGUAL_QUE de numerico > numerico
+        //MENORIGUALREL de numerico > numerico
         if (strcmp($1.tipo, tipos[0]) == 0 && strcmp($3.tipo, tipos[0]) == 0) {  //comprobacion del tipo
-            printf("> --logic--> MENOR_IGUAL_QUE {numerico / numerico}\n");
+            printf("> --logic--> MENORIGUALREL {numerico / numerico}\n");
             $$.n = crearNodoNoTerminal($1.n, $3.n, 13);
             $$.tipo = tipos[0]; 
             $$.numerico = $1.numerico <= $3.numerico;
         }
-        //MENOR_IGUAL_QUE de numericoDecimal > numericoDecimal
+        //MENORIGUALREL de numericoDecimal > numericoDecimal
         else if (strcmp($1.tipo, tipos[1]) == 0 && strcmp($3.tipo, tipos[1]) == 0){  //comprobacion del tipo
-            printf("> --logic--> MENOR_IGUAL_QUE {numericoDecimal / numericoDecimal}\n");
+            printf("> --logic--> MENORIGUALREL {numericoDecimal / numericoDecimal}\n");
             $$.n = crearNodoNoTerminal($1.n, $3.n, 13);
             $$.tipo = tipos[1]; 
             $$.numericoDecimal = $1.numericoDecimal <= $3.numericoDecimal;
@@ -393,17 +393,17 @@ expresion:
             yyerror("*** Ha ocurrido un ERROR en MENOR O IGUAL QUE ***");
             printf("Linea de ERROR: %d\n", num_linea);
         }
-    }//IGUAL_IGUAL
-    | expresion IGUAL_IGUAL tipos {
+    }//IGUALREL
+    | expresion IGUALREL tipos {
         
-        //IGUAL_IGUAL de numerico == numerico
+        //IGUALREL de numerico == numerico
         if (strcmp($1.tipo, tipos[0]) == 0 && strcmp($3.tipo, tipos[0]) == 0) {  //comprobacion del tipo
             printf("> --logic--> IGUALDAD {numerico / numerico}\n");
             $$.n = crearNodoNoTerminal($1.n, $3.n, 14);
             $$.tipo = tipos[0]; 
             $$.numerico = $1.numerico == $3.numerico;
         }
-        //IGUAL_IGUAL de numericoDecimal == numericoDecimal
+        //IGUALREL de numericoDecimal == numericoDecimal
         else if (strcmp($1.tipo, tipos[1]) == 0 && strcmp($3.tipo, tipos[1]) == 0){  //comprobacion del tipo
             printf("> --logic--> IGUALDAD {numericoDecimal / numericoDecimal}\n");
             $$.n = crearNodoNoTerminal($1.n, $3.n, 14);
@@ -415,26 +415,26 @@ expresion:
             yyerror("*** Ha ocurrido un ERROR en IGUAL IGUAL ***");
             printf("Linea de ERROR: %d\n", num_linea);
         }
-    }//NO_IGUAL
-    | expresion NO_IGUAL tipos {
+    }//NOIGUALREL
+    | expresion NOIGUALREL tipos {
         
-        //NO_IGUAL de numerico != numerico
+        //NOIGUALREL de numerico != numerico
         if (strcmp($1.tipo, tipos[0]) == 0 && strcmp($3.tipo, tipos[0]) == 0) {  //comprobacion del tipo
-            printf("> --logic--> NO_IGUAL {numerico / numerico}\n");
+            printf("> --logic--> NOIGUALREL {numerico / numerico}\n");
             $$.n = crearNodoNoTerminal($1.n, $3.n, 15);
             $$.tipo = tipos[0]; 
             $$.numerico = $1.numerico != $3.numerico;
         }
-        //NO_IGUAL de numericoDecimal != numericoDecimal
+        //NOIGUALREL de numericoDecimal != numericoDecimal
         else if (strcmp($1.tipo, tipos[1]) == 0 && strcmp($3.tipo, tipos[1]) == 0){  //comprobacion del tipo
-            printf("> --logic--> NO_IGUAL {numericoDecimal / numericoDecimal}\n");
+            printf("> --logic--> NOIGUALREL {numericoDecimal / numericoDecimal}\n");
             $$.n = crearNodoNoTerminal($1.n, $3.n, 15);
             $$.tipo = tipos[1]; 
             $$.numericoDecimal = $1.numericoDecimal != $3.numericoDecimal;
         }
-        //NO_IGUAL de string != string (texto)
+        //NOIGUALREL de string != string (texto)
         else if (strcmp($1.tipo, tipos[2]) == 0 && strcmp($3.tipo, tipos[2]) == 0){  //comprobacion del tipo
-            printf("> --logic--> NO_IGUAL {texto / texto}\n");
+            printf("> --logic--> NOIGUALREL {texto / texto}\n");
             $$.n = crearNodoNoTerminal($1.n, $3.n, 15);
             $$.tipo = tipos[2]; 
             $$.texto = $1.texto != $3.texto;
@@ -632,7 +632,7 @@ imprimir:
 //Representa la estructura del bucle while en lenguaje python
 //W --> while ( E ): S 'fin_bucle'
 bucle_w:
-    WHILE APERTURAPARENTESIS expresion CIERREPARENTESIS DOSPUNTOS sentencias FIN_BUCLE {
+    WHILE APERTURAPARENTESIS expresion CIERREPARENTESIS DOSPUNTOS sentencias ENDWHILE {
         printf("> Bucle While\n");
         $$.n = crearNodoNoTerminal($3.n, $6.n, 21); // 21 es el numero del while
     }
@@ -643,7 +643,7 @@ bucle_w:
 //Representa la estructura del bucle for en lenguaje PYTHON
 //F --> for E in range ( E ): S 'fin_bucle'
 bucle_f:
-    FOR_BUCLE IDENTIFICADOR IN RANGE APERTURAPARENTESIS expresion CIERREPARENTESIS DOSPUNTOS sentencias FIN_FOR {
+    FOR IDENTIFICADOR IN RANGE APERTURAPARENTESIS expresion CIERREPARENTESIS DOSPUNTOS sentencias ENDFOR {
         printf("> Bucle For\n");
         $$.n = crearNodoNoTerminal($6.n, $9.n, 22); // 22 es el numero del for
     }
@@ -652,9 +652,9 @@ bucle_f:
 
 //-----------------------------------------------  CONDICION IF ---------------------------------------------
 //Representa la estructura de la condicion if en lenguaje python
-//IF_CONDICION --> if ( E ): S else: S 'fin_conndicion'
+//IF --> if ( E ): S else: S 'fin_conndicion'
 condicion_if:
-    IF_CONDICION APERTURAPARENTESIS expresion CIERREPARENTESIS DOSPUNTOS sentencias elif_clauses else_clause FIN_CONDICION {
+    IF APERTURAPARENTESIS expresion CIERREPARENTESIS DOSPUNTOS sentencias elif_clauses else_clause ENDIF {
         printf("> Condicional If\n");
         if($3.numerico == 1){
             $$.n = crearNodoNoTerminal($6.n, crearNodoVacio(), 7); // 7 is the number for if
@@ -670,7 +670,7 @@ elif_clauses:
     /* empty */ {
         $$.numerico = 0;
     }
-    | elif_clauses ELIF_CONDICION APERTURAPARENTESIS expresion CIERREPARENTESIS DOSPUNTOS sentencias {
+    | elif_clauses ELIF APERTURAPARENTESIS expresion CIERREPARENTESIS DOSPUNTOS sentencias {
         printf("> Condicional Elif\n");
         if($4.numerico == 1){
             $$.numerico = 1;
@@ -680,7 +680,7 @@ elif_clauses:
     ;
 
 else_clause:
-    ELSE_CONDICION DOSPUNTOS sentencias {
+    ELSE DOSPUNTOS sentencias {
         $$.n = $3.n;
     }
     | /* empty */ {

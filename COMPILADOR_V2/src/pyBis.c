@@ -138,26 +138,26 @@ int array_count = 0;
      APERTURACORCHETE = 265,
      CIERRECORCHETE = 266,
      IMPRIMIR = 267,
-     MAYOR_QUE = 268,
-     MENOR_QUE = 269,
-     MAYOR_IGUAL_QUE = 270,
-     MENOR_IGUAL_QUE = 271,
-     IGUAL_IGUAL = 272,
-     NO_IGUAL = 273,
+     MAYORREL = 268,
+     MENORREL = 269,
+     MAYORIGUALREL = 270,
+     MENORIGUALREL = 271,
+     IGUALREL = 272,
+     NOIGUALREL = 273,
      AND = 274,
      OR = 275,
      WHILE = 276,
-     FIN_BUCLE = 277,
+     ENDWHILE = 277,
      DOSPUNTOS = 278,
-     FOR_BUCLE = 279,
-     FIN_FOR = 280,
+     FOR = 279,
+     ENDFOR = 280,
      IN = 281,
      RANGE = 282,
      COMA = 283,
-     IF_CONDICION = 284,
-     ELIF_CONDICION = 285,
-     ELSE_CONDICION = 286,
-     FIN_CONDICION = 287,
+     IF = 284,
+     ELIF = 285,
+     ELSE = 286,
+     ENDIF = 287,
      NUMERICO = 288,
      NUMERICODECIMAL = 289,
      IDENTIFICADOR = 290,
@@ -520,11 +520,10 @@ static const char *const yytname[] =
 {
   "$end", "error", "$undefined", "SUMA", "RESTA", "MULTIPLICACION",
   "DIVISION", "IGUAL", "APERTURAPARENTESIS", "CIERREPARENTESIS",
-  "APERTURACORCHETE", "CIERRECORCHETE", "IMPRIMIR", "MAYOR_QUE",
-  "MENOR_QUE", "MAYOR_IGUAL_QUE", "MENOR_IGUAL_QUE", "IGUAL_IGUAL",
-  "NO_IGUAL", "AND", "OR", "WHILE", "FIN_BUCLE", "DOSPUNTOS", "FOR_BUCLE",
-  "FIN_FOR", "IN", "RANGE", "COMA", "IF_CONDICION", "ELIF_CONDICION",
-  "ELSE_CONDICION", "FIN_CONDICION", "NUMERICO", "NUMERICODECIMAL",
+  "APERTURACORCHETE", "CIERRECORCHETE", "IMPRIMIR", "MAYORREL", "MENORREL",
+  "MAYORIGUALREL", "MENORIGUALREL", "IGUALREL", "NOIGUALREL", "AND", "OR",
+  "WHILE", "ENDWHILE", "DOSPUNTOS", "FOR", "ENDFOR", "IN", "RANGE", "COMA",
+  "IF", "ELIF", "ELSE", "ENDIF", "NUMERICO", "NUMERICODECIMAL",
   "IDENTIFICADOR", "CADENA", "NUM", "$accept", "codigo", "sentencias",
   "sentencia", "asignacion", "expresion", "elements", "tipos", "imprimir",
   "bucle_w", "bucle_f", "condicion_if", "elif_clauses", "else_clause", 0
@@ -1740,16 +1739,16 @@ yyreduce:
 #line 306 "src/pyBis.y"
     {
         
-        //MAYOR_QUE de numerico > numerico
+        //MAYORREL de numerico > numerico
         if (strcmp((yyvsp[(1) - (3)].tr).tipo, tipos[0]) == 0 && strcmp((yyvsp[(3) - (3)].tr).tipo, tipos[0]) == 0) {  //comprobacion del tipo
-            printf("> --logic--> MAYOR_QUE {numerico / numerico}\n");
+            printf("> --logic--> MAYORREL {numerico / numerico}\n");
             (yyval.tr).n = crearNodoNoTerminal((yyvsp[(1) - (3)].tr).n, (yyvsp[(3) - (3)].tr).n, 10);
             (yyval.tr).tipo = tipos[0]; 
             (yyval.tr).numerico = (yyvsp[(1) - (3)].tr).numerico > (yyvsp[(3) - (3)].tr).numerico;
         }
-        //MAYOR_QUE de numericoDecimal > numericoDecimal
+        //MAYORREL de numericoDecimal > numericoDecimal
         else if (strcmp((yyvsp[(1) - (3)].tr).tipo, tipos[1]) == 0 && strcmp((yyvsp[(3) - (3)].tr).tipo, tipos[1]) == 0){  //comprobacion del tipo
-            printf("> --logic--> MAYOR_QUE {numericoDecimal / numericoDecimal}\n");
+            printf("> --logic--> MAYORREL {numericoDecimal / numericoDecimal}\n");
             (yyval.tr).n = crearNodoNoTerminal((yyvsp[(1) - (3)].tr).n, (yyvsp[(3) - (3)].tr).n, 10);
             (yyval.tr).tipo = tipos[1]; 
             (yyval.tr).numericoDecimal = (yyvsp[(1) - (3)].tr).numericoDecimal > (yyvsp[(3) - (3)].tr).numericoDecimal;
@@ -1768,16 +1767,16 @@ yyreduce:
 #line 329 "src/pyBis.y"
     {
         
-        //MAYOR_IGUAL_QUE de numerico > numerico
+        //MAYORIGUALREL de numerico > numerico
         if (strcmp((yyvsp[(1) - (3)].tr).tipo, tipos[0]) == 0 && strcmp((yyvsp[(3) - (3)].tr).tipo, tipos[0]) == 0) {  //comprobacion del tipo
-            printf("> --logic--> MAYOR_IGUAL_QUE {numerico / numerico}\n");
+            printf("> --logic--> MAYORIGUALREL {numerico / numerico}\n");
             (yyval.tr).n = crearNodoNoTerminal((yyvsp[(1) - (3)].tr).n, (yyvsp[(3) - (3)].tr).n, 11);
             (yyval.tr).tipo = tipos[0]; 
             (yyval.tr).numerico = (yyvsp[(1) - (3)].tr).numerico >= (yyvsp[(3) - (3)].tr).numerico;
         }
-        //MAYOR_IGUAL_QUE de numericoDecimal > numericoDecimal
+        //MAYORIGUALREL de numericoDecimal > numericoDecimal
         else if (strcmp((yyvsp[(1) - (3)].tr).tipo, tipos[1]) == 0 && strcmp((yyvsp[(3) - (3)].tr).tipo, tipos[1]) == 0){  //comprobacion del tipo
-            printf("> --logic--> MAYOR_IGUAL_QUE {numericoDecimal / numericoDecimal}\n");
+            printf("> --logic--> MAYORIGUALREL {numericoDecimal / numericoDecimal}\n");
             (yyval.tr).n = crearNodoNoTerminal((yyvsp[(1) - (3)].tr).n, (yyvsp[(3) - (3)].tr).n, 11);
             (yyval.tr).tipo = tipos[1]; 
             (yyval.tr).numericoDecimal = (yyvsp[(1) - (3)].tr).numericoDecimal >= (yyvsp[(3) - (3)].tr).numericoDecimal;
@@ -1796,16 +1795,16 @@ yyreduce:
 #line 352 "src/pyBis.y"
     {
         
-        //MENOR_QUE de numerico > numerico
+        //MENORREL de numerico > numerico
         if (strcmp((yyvsp[(1) - (3)].tr).tipo, tipos[0]) == 0 && strcmp((yyvsp[(3) - (3)].tr).tipo, tipos[0]) == 0) {  //comprobacion del tipo
-            printf("> --logic--> MENOR QUE {numerico / numerico}\n");
+            printf("> --logic--> MENORREL {numerico / numerico}\n");
             (yyval.tr).n = crearNodoNoTerminal((yyvsp[(1) - (3)].tr).n, (yyvsp[(3) - (3)].tr).n, 12);
             (yyval.tr).tipo = tipos[0]; 
             (yyval.tr).numerico = (yyvsp[(1) - (3)].tr).numerico < (yyvsp[(3) - (3)].tr).numerico;
         }
-        //MENOR_QUE de numericoDecimal > numericoDecimal
+        //MENORREL de numericoDecimal > numericoDecimal
         else if (strcmp((yyvsp[(1) - (3)].tr).tipo, tipos[1]) == 0 && strcmp((yyvsp[(3) - (3)].tr).tipo, tipos[1]) == 0){  //comprobacion del tipo
-            printf("> --logic--> MENOR QUE {numericoDecimal / numericoDecimal}\n");
+            printf("> --logic--> MENORREL {numericoDecimal / numericoDecimal}\n");
             (yyval.tr).n = crearNodoNoTerminal((yyvsp[(1) - (3)].tr).n, (yyvsp[(3) - (3)].tr).n, 12);
             (yyval.tr).tipo = tipos[1]; 
             (yyval.tr).numericoDecimal = (yyvsp[(1) - (3)].tr).numericoDecimal < (yyvsp[(3) - (3)].tr).numericoDecimal;
@@ -1824,16 +1823,16 @@ yyreduce:
 #line 375 "src/pyBis.y"
     {
         
-        //MENOR_IGUAL_QUE de numerico > numerico
+        //MENORIGUALREL de numerico > numerico
         if (strcmp((yyvsp[(1) - (3)].tr).tipo, tipos[0]) == 0 && strcmp((yyvsp[(3) - (3)].tr).tipo, tipos[0]) == 0) {  //comprobacion del tipo
-            printf("> --logic--> MENOR_IGUAL_QUE {numerico / numerico}\n");
+            printf("> --logic--> MENORIGUALREL {numerico / numerico}\n");
             (yyval.tr).n = crearNodoNoTerminal((yyvsp[(1) - (3)].tr).n, (yyvsp[(3) - (3)].tr).n, 13);
             (yyval.tr).tipo = tipos[0]; 
             (yyval.tr).numerico = (yyvsp[(1) - (3)].tr).numerico <= (yyvsp[(3) - (3)].tr).numerico;
         }
-        //MENOR_IGUAL_QUE de numericoDecimal > numericoDecimal
+        //MENORIGUALREL de numericoDecimal > numericoDecimal
         else if (strcmp((yyvsp[(1) - (3)].tr).tipo, tipos[1]) == 0 && strcmp((yyvsp[(3) - (3)].tr).tipo, tipos[1]) == 0){  //comprobacion del tipo
-            printf("> --logic--> MENOR_IGUAL_QUE {numericoDecimal / numericoDecimal}\n");
+            printf("> --logic--> MENORIGUALREL {numericoDecimal / numericoDecimal}\n");
             (yyval.tr).n = crearNodoNoTerminal((yyvsp[(1) - (3)].tr).n, (yyvsp[(3) - (3)].tr).n, 13);
             (yyval.tr).tipo = tipos[1]; 
             (yyval.tr).numericoDecimal = (yyvsp[(1) - (3)].tr).numericoDecimal <= (yyvsp[(3) - (3)].tr).numericoDecimal;
@@ -1852,14 +1851,14 @@ yyreduce:
 #line 397 "src/pyBis.y"
     {
         
-        //IGUAL_IGUAL de numerico == numerico
+        //IGUALREL de numerico == numerico
         if (strcmp((yyvsp[(1) - (3)].tr).tipo, tipos[0]) == 0 && strcmp((yyvsp[(3) - (3)].tr).tipo, tipos[0]) == 0) {  //comprobacion del tipo
             printf("> --logic--> IGUALDAD {numerico / numerico}\n");
             (yyval.tr).n = crearNodoNoTerminal((yyvsp[(1) - (3)].tr).n, (yyvsp[(3) - (3)].tr).n, 14);
             (yyval.tr).tipo = tipos[0]; 
             (yyval.tr).numerico = (yyvsp[(1) - (3)].tr).numerico == (yyvsp[(3) - (3)].tr).numerico;
         }
-        //IGUAL_IGUAL de numericoDecimal == numericoDecimal
+        //IGUALREL de numericoDecimal == numericoDecimal
         else if (strcmp((yyvsp[(1) - (3)].tr).tipo, tipos[1]) == 0 && strcmp((yyvsp[(3) - (3)].tr).tipo, tipos[1]) == 0){  //comprobacion del tipo
             printf("> --logic--> IGUALDAD {numericoDecimal / numericoDecimal}\n");
             (yyval.tr).n = crearNodoNoTerminal((yyvsp[(1) - (3)].tr).n, (yyvsp[(3) - (3)].tr).n, 14);
@@ -1880,23 +1879,23 @@ yyreduce:
 #line 419 "src/pyBis.y"
     {
         
-        //NO_IGUAL de numerico != numerico
+        //NOIGUALREL de numerico != numerico
         if (strcmp((yyvsp[(1) - (3)].tr).tipo, tipos[0]) == 0 && strcmp((yyvsp[(3) - (3)].tr).tipo, tipos[0]) == 0) {  //comprobacion del tipo
-            printf("> --logic--> NO_IGUAL {numerico / numerico}\n");
+            printf("> --logic--> NOIGUALREL {numerico / numerico}\n");
             (yyval.tr).n = crearNodoNoTerminal((yyvsp[(1) - (3)].tr).n, (yyvsp[(3) - (3)].tr).n, 15);
             (yyval.tr).tipo = tipos[0]; 
             (yyval.tr).numerico = (yyvsp[(1) - (3)].tr).numerico != (yyvsp[(3) - (3)].tr).numerico;
         }
-        //NO_IGUAL de numericoDecimal != numericoDecimal
+        //NOIGUALREL de numericoDecimal != numericoDecimal
         else if (strcmp((yyvsp[(1) - (3)].tr).tipo, tipos[1]) == 0 && strcmp((yyvsp[(3) - (3)].tr).tipo, tipos[1]) == 0){  //comprobacion del tipo
-            printf("> --logic--> NO_IGUAL {numericoDecimal / numericoDecimal}\n");
+            printf("> --logic--> NOIGUALREL {numericoDecimal / numericoDecimal}\n");
             (yyval.tr).n = crearNodoNoTerminal((yyvsp[(1) - (3)].tr).n, (yyvsp[(3) - (3)].tr).n, 15);
             (yyval.tr).tipo = tipos[1]; 
             (yyval.tr).numericoDecimal = (yyvsp[(1) - (3)].tr).numericoDecimal != (yyvsp[(3) - (3)].tr).numericoDecimal;
         }
-        //NO_IGUAL de string != string (texto)
+        //NOIGUALREL de string != string (texto)
         else if (strcmp((yyvsp[(1) - (3)].tr).tipo, tipos[2]) == 0 && strcmp((yyvsp[(3) - (3)].tr).tipo, tipos[2]) == 0){  //comprobacion del tipo
-            printf("> --logic--> NO_IGUAL {texto / texto}\n");
+            printf("> --logic--> NOIGUALREL {texto / texto}\n");
             (yyval.tr).n = crearNodoNoTerminal((yyvsp[(1) - (3)].tr).n, (yyvsp[(3) - (3)].tr).n, 15);
             (yyval.tr).tipo = tipos[2]; 
             (yyval.tr).texto = (yyvsp[(1) - (3)].tr).texto != (yyvsp[(3) - (3)].tr).texto;
@@ -2202,7 +2201,7 @@ yyreduce:
 
 
 /* Line 1464 of yacc.c  */
-#line 2206 "src/pyBis.c"
+#line 2205 "src/pyBis.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -2435,3 +2434,4 @@ void yyerror(const char* s) {
     fprintf(stderr, "Linea de ERROR: %d: %s", num_linea, s);
     fprintf(stderr, "\n--------------------------------------------------------\n\n");
 }
+
