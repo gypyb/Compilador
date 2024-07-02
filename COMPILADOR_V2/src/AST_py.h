@@ -536,7 +536,7 @@ struct ast *crearNodoTerminal(double valor , char *tipo)
 
   n->resultado = encontrarReg(); //Hacemos llamada al metodo para buscar un nuevo registro
   n->nombreVar = crearNombreVariable();
-  printf("# [AST] - Registro $f%d ocupado para var_%d = %.3f\n", n->resultado, n->nombreVar, n->valorNodo.valorDouble);
+  printf("# AST - Registro $f%d ocupado para var_%d = %.3f\n", n->resultado, n->nombreVar, n->valorNodo.valorDouble);
   variables[n->resultado].dato = n->valorNodo.valorDouble;
   variables[n->resultado].nombre = n->nombreVar;
   variables[n->resultado].registro = n->resultado;
@@ -555,7 +555,7 @@ struct ast *crearNodoTerminalString(char *valor , char *tipo)
 
   n->resultado = encontrarReg(); //Hacemos llamada al metodo para buscar un nuevo registro
   n->nombreVar = crearNombreVariable();
-  printf("# [AST] - Registro $f%d ocupado para var_%d = %s\n", n->resultado, n->nombreVar, n->valorNodo.valorString);
+  printf("# AST - Registro $f%d ocupado para var_%d = %s\n", n->resultado, n->nombreVar, n->valorNodo.valorString);
   variables[n->resultado].texto = n->valorNodo.valorString;
   variables[n->resultado].nombre = n->nombreVar;
   variables[n->resultado].registro = n->resultado;
@@ -574,7 +574,7 @@ struct ast *crearNodoTerminalArray(int *valores , char *tipo)
 
   n->resultado = encontrarReg(); //Hacemos llamada al metodo para buscar un nuevo registro
   n->nombreVar = crearNombreVariable();
-  printf("# [AST] - Registro $f%d ocupado para var_%d =\n", n->resultado, n->nombreVar);
+  printf("# AST - Registro $f%d ocupado para var_%d =\n", n->resultado, n->nombreVar);
   variables[n->resultado].array = n->valorNodo.array;
   variables[n->resultado].nombre = n->nombreVar;
   variables[n->resultado].disponible = true;

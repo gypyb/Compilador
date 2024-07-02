@@ -990,7 +990,7 @@ case 37:
 /* rule 37 can match eol */
 YY_RULE_SETUP
 #line 56 "src/pyLex.flex"
-{ printf("\n--------------- Numero de linea %d ----------------\n\n", num_linea); num_linea++;}
+{ printf("\n--------------- Linea de codigo %d ----------------\n\n", num_linea); num_linea++;}
 	YY_BREAK
 case 38:
 YY_RULE_SETUP

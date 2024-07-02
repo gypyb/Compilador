@@ -53,7 +53,7 @@ print                                           return IMPRIMIR;
 _?[a-zA-Z0-9_]+		                            {yylval.stringVal = strdup(yytext); return IDENTIFICADOR;}
                                         
 
-\n                                              { printf("\n--------------- Numero de linea %d ----------------\n\n", num_linea); num_linea++;}
+\n                                              { printf("\n--------------- Linea de codigo %d ----------------\n\n", num_linea); num_linea++;}
 [ \t]                                           { /* no se hace nada */ }
 
 

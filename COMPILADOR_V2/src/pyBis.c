@@ -508,8 +508,8 @@ static const yytype_uint16 yyrline[] =
 {
        0,    85,    85,    94,    95,   103,   104,   105,   106,   107,
      114,   179,   237,   260,   283,   306,   329,   352,   375,   397,
-     419,   449,   467,   484,   497,   514,   521,   527,   546,   577,
-     588,   598,   612,   636,   647,   658,   671,   674,   684,   687
+     419,   449,   467,   484,   497,   514,   521,   527,   546,   576,
+     587,   597,   611,   635,   646,   657,   670,   673,   683,   686
 };
 #endif
 
@@ -1530,11 +1530,11 @@ yyreduce:
 /* Line 1464 of yacc.c  */
 #line 114 "src/pyBis.y"
     {
-        printf("> [SENTENCIA] - Asignacion\n");
+        printf("> Asignacion\n");
 
         //Para crear un nuevo simbolo de tipo numerico
         if(strcmp((yyvsp[(3) - (3)].tr).tipo, tipos[0]) == 0){ //comprobacion si es numerico
-            printf("Asignado el valor %d a la variable\n",(yyvsp[(3) - (3)].tr).numerico);
+            printf("Asignado a la variable el valor %d\n",(yyvsp[(3) - (3)].tr).numerico);
             tabla[indice].nombre = (yyvsp[(1) - (3)].stringVal); 
             tabla[indice].tipo = tipos[0]; 
             tabla[indice].numerico = (yyvsp[(3) - (3)].tr).numerico;
@@ -1544,7 +1544,7 @@ yyreduce:
         }
         //Para crear un nuevo simbolo de tipo numericoDecimal
         else if(strcmp((yyvsp[(3) - (3)].tr).tipo, tipos[1]) == 0){ //comprobacion si es numericoDecimal
-            printf("Asignado el valor %d a la variable\n",(yyvsp[(3) - (3)].tr).numericoDecimal);
+            printf("Asignado a la variable el valor %d\n",(yyvsp[(3) - (3)].tr).numericoDecimal);
             tabla[indice].nombre = (yyvsp[(1) - (3)].stringVal); 
             tabla[indice].tipo = tipos[1]; 
             tabla[indice].numericoDecimal = (yyvsp[(3) - (3)].tr).numericoDecimal; 
@@ -1555,7 +1555,7 @@ yyreduce:
         
         //Para crear un nuevo simbolo de tipo texto
         else if (strcmp((yyvsp[(3) - (3)].tr).tipo, tipos[2]) == 0){ //comprobacion si es texto
-            printf("Asignado el valor %s a la variable\n",(yyvsp[(3) - (3)].tr).texto);
+            printf("Asignado a la variable el valor %s\n",(yyvsp[(3) - (3)].tr).texto);
             tabla[indice].nombre = (yyvsp[(1) - (3)].stringVal); 
             tabla[indice].tipo = tipos[2];
             tabla[indice].texto = (yyvsp[(3) - (3)].tr).texto;
@@ -1565,7 +1565,7 @@ yyreduce:
         }
         //Para crear un nuevo simbolo de tipo array
         else if (strcmp((yyvsp[(3) - (3)].tr).tipo, tipos[4]) == 0){ //comprobacion si es array
-            printf("Asignado el valor %d a la variable\n", (yyvsp[(3) - (3)].tr).miarray->valores[1]);
+            printf("Asignado a la variable el valor %d\n", (yyvsp[(3) - (3)].tr).miarray->valores[1]);
             tabla[indice].nombre = (yyvsp[(1) - (3)].stringVal); 
             tabla[indice].tipo = tipos[4];
             tabla[indice].arrayNumerico = (yyvsp[(3) - (3)].tr).miarray->valores;
@@ -1578,7 +1578,7 @@ yyreduce:
         // Control de errores
         else{
             yyerror("*** ERROR No es ninguno de los tipos definidos ***");
-            printf("Error en la linea %d\n", num_linea);
+            printf("Linea de ERROR: %d\n", num_linea);
         }
         
         (yyval.tr).n=crearNodoNoTerminal((yyvsp[(3) - (3)].tr).n, crearNodoVacio(), 5);
@@ -1595,7 +1595,7 @@ yyreduce:
 
         //Suma de numerico + numerico
         if (strcmp((yyvsp[(1) - (3)].tr).tipo, tipos[0]) == 0 && strcmp((yyvsp[(3) - (3)].tr).tipo, tipos[0]) == 0) { //comprobacion del tipo
-            printf("> [OPERACION] - SUMA {numerico / numerico}\n");
+            printf("> Suma {numerico / numerico}\n");
             (yyval.tr).n = crearNodoNoTerminal((yyvsp[(1) - (3)].tr).n, (yyvsp[(3) - (3)].tr).n, 2); 
             (yyval.tr).tipo = tipos[0]; 
             (yyval.tr).numerico = (yyvsp[(1) - (3)].tr).numerico + (yyvsp[(3) - (3)].tr).numerico;
@@ -1604,7 +1604,7 @@ yyreduce:
 
         //Suma de numericoDecimal + numericoDecimal
         else if (strcmp((yyvsp[(1) - (3)].tr).tipo, tipos[1]) == 0 && strcmp((yyvsp[(3) - (3)].tr).tipo, tipos[1]) == 0){  //comprobacion del tipo
-            printf("> [OPERACION] - SUMA {numericoDecimal / numericoDecimal}\n");
+            printf("> Suma {numericoDecimal / numericoDecimal}\n");
             (yyval.tr).n = crearNodoNoTerminal((yyvsp[(1) - (3)].tr).n, (yyvsp[(3) - (3)].tr).n, 2);
             (yyval.tr).tipo = tipos[1];
             (yyval.tr).n->tipo = tipos[1];
@@ -1613,7 +1613,7 @@ yyreduce:
 
         //Suma de texto + texto
         else if (strcmp((yyvsp[(1) - (3)].tr).tipo, tipos[2]) == 0 && strcmp((yyvsp[(3) - (3)].tr).tipo, tipos[2]) == 0) {  //comprobacion del tipo
-            printf("> [OPERACION] - CONCATENACION {texto / texto}\n");
+            printf("> Concatenacion {texto / texto}\n");
 
 
             char *cadenaUnificada = malloc(strlen((yyvsp[(1) - (3)].tr).n->valorNodo.valorString) + strlen((yyvsp[(3) - (3)].tr).n->valorNodo.valorString) + 2);
@@ -1643,8 +1643,8 @@ yyreduce:
         }
         // Control de errores
         else{
-            yyerror("*** ERROR en la operacion SUMA ***");
-            printf("Error en la linea %d\n", num_linea);
+            yyerror("*** Ha ocurrido un ERROR en SUMA ***");
+            printf("Linea de ERROR: %d\n", num_linea);
         }
 
     ;}
@@ -1658,22 +1658,22 @@ yyreduce:
         
         //Resta de numerico - numerico
         if (strcmp((yyvsp[(1) - (3)].tr).tipo, tipos[0]) == 0 && strcmp((yyvsp[(3) - (3)].tr).tipo, tipos[0]) == 0) {  //comprobacion del tipo
-            printf("> [OPERACION] - RESTA {numerico / numerico}\n");
+            printf("> Resta {numerico / numerico}\n");
             (yyval.tr).n = crearNodoNoTerminal((yyvsp[(1) - (3)].tr).n, (yyvsp[(3) - (3)].tr).n, 3);
             (yyval.tr).tipo = tipos[0]; 
             (yyval.tr).numerico = (yyvsp[(1) - (3)].tr).numerico - (yyvsp[(3) - (3)].tr).numerico;
         }
         //Resta de numericoDecimal - numericoDecimal
         else if (strcmp((yyvsp[(1) - (3)].tr).tipo, tipos[1]) == 0 && strcmp((yyvsp[(3) - (3)].tr).tipo, tipos[1]) == 0){  //comprobacion del tipo
-            printf("> [OPERACION] - RESTA {numericoDecimal / numericoDecimal}\n");
+            printf("> Resta {numericoDecimal / numericoDecimal}\n");
             (yyval.tr).n = crearNodoNoTerminal((yyvsp[(1) - (3)].tr).n, (yyvsp[(3) - (3)].tr).n, 3);
             (yyval.tr).tipo = tipos[1]; 
             (yyval.tr).numericoDecimal = (yyvsp[(1) - (3)].tr).numericoDecimal - (yyvsp[(3) - (3)].tr).numericoDecimal;
         }
         // Control de errores
         else{
-            yyerror("*** ERROR en la operacion RESTA ***");
-            printf("Error en la linea %d\n", num_linea);
+            yyerror("*** Ha ocurrido un ERROR en RESTA ***");
+            printf("Linea de ERROR: %d\n", num_linea);
         }
     ;}
     break;
@@ -1686,22 +1686,22 @@ yyreduce:
         
         //Multiplicación de numerico * numerico
         if (strcmp((yyvsp[(1) - (3)].tr).tipo, tipos[0]) == 0 && strcmp((yyvsp[(3) - (3)].tr).tipo, tipos[0]) == 0) {  //comprobacion del tipo
-            printf("> [OPERACION] - MULTIPLICACION {numerico / numerico}\n");
+            printf("> Multiplicacion {numerico / numerico}\n");
             (yyval.tr).n = crearNodoNoTerminal((yyvsp[(1) - (3)].tr).n, (yyvsp[(3) - (3)].tr).n, 9);
             (yyval.tr).tipo = tipos[0]; 
             (yyval.tr).numerico = (yyvsp[(1) - (3)].tr).numerico * (yyvsp[(3) - (3)].tr).numerico;
         }
         //Multiplicación de numericoDecimal * numericoDecimal
         else if (strcmp((yyvsp[(1) - (3)].tr).tipo, tipos[1]) == 0 && strcmp((yyvsp[(3) - (3)].tr).tipo, tipos[1]) == 0){  //comprobacion del tipo
-            printf("> [OPERACION] - MULTIPLICACION {numericoDecimal / numericoDecimal}\n");
+            printf("> Multiplicacion {numericoDecimal / numericoDecimal}\n");
             (yyval.tr).n = crearNodoNoTerminal((yyvsp[(1) - (3)].tr).n, (yyvsp[(3) - (3)].tr).n, 9);
             (yyval.tr).tipo = tipos[1]; 
             (yyval.tr).numericoDecimal = (yyvsp[(1) - (3)].tr).numericoDecimal * (yyvsp[(3) - (3)].tr).numericoDecimal;
         }
         // Control de errores
         else{
-            yyerror("*** ERROR en la operacion MULTIPLICACION ***");
-            printf("Error en la linea %d\n", num_linea);
+            yyerror("*** Ha ocurrido un ERROR en MULTIPLICACION ***");
+            printf("Linea de ERROR: %d\n", num_linea);
         }
     ;}
     break;
@@ -1714,22 +1714,22 @@ yyreduce:
         
         //DIVISION de numerico * numerico
         if (strcmp((yyvsp[(1) - (3)].tr).tipo, tipos[0]) == 0 && strcmp((yyvsp[(3) - (3)].tr).tipo, tipos[0]) == 0) {  //comprobacion del tipo
-            printf("> [OPERACION] - DIVISION {numerico / numerico}\n");
+            printf("> Division {numerico / numerico}\n");
             (yyval.tr).n = crearNodoNoTerminal((yyvsp[(1) - (3)].tr).n, (yyvsp[(3) - (3)].tr).n, 8);
             (yyval.tr).tipo = tipos[0]; 
             (yyval.tr).numerico = (yyvsp[(1) - (3)].tr).numerico / (yyvsp[(3) - (3)].tr).numerico;
         }
         //DIVISION de numericoDecimal * numericoDecimal
         else if (strcmp((yyvsp[(1) - (3)].tr).tipo, tipos[1]) == 0 && strcmp((yyvsp[(3) - (3)].tr).tipo, tipos[1]) == 0){  //comprobacion del tipo
-            printf("> [OPERACION] - DIVISION {numericoDecimal / numericoDecimal}\n");
+            printf("> Division {numericoDecimal / numericoDecimal}\n");
             (yyval.tr).n = crearNodoNoTerminal((yyvsp[(1) - (3)].tr).n, (yyvsp[(3) - (3)].tr).n, 8);
             (yyval.tr).tipo = tipos[1]; 
             (yyval.tr).numericoDecimal = (yyvsp[(1) - (3)].tr).numericoDecimal / (yyvsp[(3) - (3)].tr).numericoDecimal;
         }
         // Control de errores
         else{
-            yyerror("*** ERROR en la operacion division ***");
-            printf("Error en la linea %d\n", num_linea);
+            yyerror("*** Ha ocurrido un ERROR en division ***");
+            printf("Linea de ERROR: %d\n", num_linea);
         }
     ;}
     break;
@@ -1742,22 +1742,22 @@ yyreduce:
         
         //MAYOR_QUE de numerico > numerico
         if (strcmp((yyvsp[(1) - (3)].tr).tipo, tipos[0]) == 0 && strcmp((yyvsp[(3) - (3)].tr).tipo, tipos[0]) == 0) {  //comprobacion del tipo
-            printf("> [OPERACION] - MAYOR_QUE {numerico / numerico}\n");
+            printf("> --logic--> MAYOR_QUE {numerico / numerico}\n");
             (yyval.tr).n = crearNodoNoTerminal((yyvsp[(1) - (3)].tr).n, (yyvsp[(3) - (3)].tr).n, 10);
             (yyval.tr).tipo = tipos[0]; 
             (yyval.tr).numerico = (yyvsp[(1) - (3)].tr).numerico > (yyvsp[(3) - (3)].tr).numerico;
         }
         //MAYOR_QUE de numericoDecimal > numericoDecimal
         else if (strcmp((yyvsp[(1) - (3)].tr).tipo, tipos[1]) == 0 && strcmp((yyvsp[(3) - (3)].tr).tipo, tipos[1]) == 0){  //comprobacion del tipo
-            printf("> [OPERACION] - MAYOR_QUE {numericoDecimal / numericoDecimal}\n");
+            printf("> --logic--> MAYOR_QUE {numericoDecimal / numericoDecimal}\n");
             (yyval.tr).n = crearNodoNoTerminal((yyvsp[(1) - (3)].tr).n, (yyvsp[(3) - (3)].tr).n, 10);
             (yyval.tr).tipo = tipos[1]; 
             (yyval.tr).numericoDecimal = (yyvsp[(1) - (3)].tr).numericoDecimal > (yyvsp[(3) - (3)].tr).numericoDecimal;
         }
         // Control de errores
         else{
-            yyerror("*** ERROR en la operacion MAYOR QUE ***");
-            printf("Error en la linea %d\n", num_linea);
+            yyerror("*** Ha ocurrido un ERROR en MAYOR QUE ***");
+            printf("Linea de ERROR: %d\n", num_linea);
         }
     ;}
     break;
@@ -1770,22 +1770,22 @@ yyreduce:
         
         //MAYOR_IGUAL_QUE de numerico > numerico
         if (strcmp((yyvsp[(1) - (3)].tr).tipo, tipos[0]) == 0 && strcmp((yyvsp[(3) - (3)].tr).tipo, tipos[0]) == 0) {  //comprobacion del tipo
-            printf("> [OPERACION] - MAYOR_IGUAL_QUE {numerico / numerico}\n");
+            printf("> --logic--> MAYOR_IGUAL_QUE {numerico / numerico}\n");
             (yyval.tr).n = crearNodoNoTerminal((yyvsp[(1) - (3)].tr).n, (yyvsp[(3) - (3)].tr).n, 11);
             (yyval.tr).tipo = tipos[0]; 
             (yyval.tr).numerico = (yyvsp[(1) - (3)].tr).numerico >= (yyvsp[(3) - (3)].tr).numerico;
         }
         //MAYOR_IGUAL_QUE de numericoDecimal > numericoDecimal
         else if (strcmp((yyvsp[(1) - (3)].tr).tipo, tipos[1]) == 0 && strcmp((yyvsp[(3) - (3)].tr).tipo, tipos[1]) == 0){  //comprobacion del tipo
-            printf("> [OPERACION] - MAYOR_IGUAL_QUE {numericoDecimal / numericoDecimal}\n");
+            printf("> --logic--> MAYOR_IGUAL_QUE {numericoDecimal / numericoDecimal}\n");
             (yyval.tr).n = crearNodoNoTerminal((yyvsp[(1) - (3)].tr).n, (yyvsp[(3) - (3)].tr).n, 11);
             (yyval.tr).tipo = tipos[1]; 
             (yyval.tr).numericoDecimal = (yyvsp[(1) - (3)].tr).numericoDecimal >= (yyvsp[(3) - (3)].tr).numericoDecimal;
         }
         // Control de errores
         else{
-            yyerror("*** ERROR en la operacion MAYOR O IGUAL QUE ***");
-            printf("Error en la linea %d\n", num_linea);
+            yyerror("*** Ha ocurrido un ERROR en MAYOR O IGUAL QUE ***");
+            printf("Linea de ERROR: %d\n", num_linea);
         }
     ;}
     break;
@@ -1798,22 +1798,22 @@ yyreduce:
         
         //MENOR_QUE de numerico > numerico
         if (strcmp((yyvsp[(1) - (3)].tr).tipo, tipos[0]) == 0 && strcmp((yyvsp[(3) - (3)].tr).tipo, tipos[0]) == 0) {  //comprobacion del tipo
-            printf("> [OPERACION] - MENOR_QUE {numerico / numerico}\n");
+            printf("> --logic--> MENOR QUE {numerico / numerico}\n");
             (yyval.tr).n = crearNodoNoTerminal((yyvsp[(1) - (3)].tr).n, (yyvsp[(3) - (3)].tr).n, 12);
             (yyval.tr).tipo = tipos[0]; 
             (yyval.tr).numerico = (yyvsp[(1) - (3)].tr).numerico < (yyvsp[(3) - (3)].tr).numerico;
         }
         //MENOR_QUE de numericoDecimal > numericoDecimal
         else if (strcmp((yyvsp[(1) - (3)].tr).tipo, tipos[1]) == 0 && strcmp((yyvsp[(3) - (3)].tr).tipo, tipos[1]) == 0){  //comprobacion del tipo
-            printf("> [OPERACION] - MENOR_QUE {numericoDecimal / numericoDecimal}\n");
+            printf("> --logic--> MENOR QUE {numericoDecimal / numericoDecimal}\n");
             (yyval.tr).n = crearNodoNoTerminal((yyvsp[(1) - (3)].tr).n, (yyvsp[(3) - (3)].tr).n, 12);
             (yyval.tr).tipo = tipos[1]; 
             (yyval.tr).numericoDecimal = (yyvsp[(1) - (3)].tr).numericoDecimal < (yyvsp[(3) - (3)].tr).numericoDecimal;
         }
         // Control de errores
         else{
-            yyerror("*** ERROR en la operacion MENOR QUE ***");
-            printf("Error en la linea %d\n", num_linea);
+            yyerror("*** Ha ocurrido un ERROR en MENOR QUE ***");
+            printf("Linea de ERROR: %d\n", num_linea);
         }
     ;}
     break;
@@ -1826,22 +1826,22 @@ yyreduce:
         
         //MENOR_IGUAL_QUE de numerico > numerico
         if (strcmp((yyvsp[(1) - (3)].tr).tipo, tipos[0]) == 0 && strcmp((yyvsp[(3) - (3)].tr).tipo, tipos[0]) == 0) {  //comprobacion del tipo
-            printf("> [OPERACION] - MENOR_IGUAL_QUE {numerico / numerico}\n");
+            printf("> --logic--> MENOR_IGUAL_QUE {numerico / numerico}\n");
             (yyval.tr).n = crearNodoNoTerminal((yyvsp[(1) - (3)].tr).n, (yyvsp[(3) - (3)].tr).n, 13);
             (yyval.tr).tipo = tipos[0]; 
             (yyval.tr).numerico = (yyvsp[(1) - (3)].tr).numerico <= (yyvsp[(3) - (3)].tr).numerico;
         }
         //MENOR_IGUAL_QUE de numericoDecimal > numericoDecimal
         else if (strcmp((yyvsp[(1) - (3)].tr).tipo, tipos[1]) == 0 && strcmp((yyvsp[(3) - (3)].tr).tipo, tipos[1]) == 0){  //comprobacion del tipo
-            printf("> [OPERACION] - MENOR_IGUAL_QUE {numericoDecimal / numericoDecimal}\n");
+            printf("> --logic--> MENOR_IGUAL_QUE {numericoDecimal / numericoDecimal}\n");
             (yyval.tr).n = crearNodoNoTerminal((yyvsp[(1) - (3)].tr).n, (yyvsp[(3) - (3)].tr).n, 13);
             (yyval.tr).tipo = tipos[1]; 
             (yyval.tr).numericoDecimal = (yyvsp[(1) - (3)].tr).numericoDecimal <= (yyvsp[(3) - (3)].tr).numericoDecimal;
         }
         // Control de errores
         else{
-            yyerror("*** ERROR en la operacion MENOR O IGUAL QUE ***");
-            printf("Error en la linea %d\n", num_linea);
+            yyerror("*** Ha ocurrido un ERROR en MENOR O IGUAL QUE ***");
+            printf("Linea de ERROR: %d\n", num_linea);
         }
     ;}
     break;
@@ -1854,22 +1854,22 @@ yyreduce:
         
         //IGUAL_IGUAL de numerico == numerico
         if (strcmp((yyvsp[(1) - (3)].tr).tipo, tipos[0]) == 0 && strcmp((yyvsp[(3) - (3)].tr).tipo, tipos[0]) == 0) {  //comprobacion del tipo
-            printf("> [OPERACION] - IGUAL_IGUAL {numerico / numerico}\n");
+            printf("> --logic--> IGUALDAD {numerico / numerico}\n");
             (yyval.tr).n = crearNodoNoTerminal((yyvsp[(1) - (3)].tr).n, (yyvsp[(3) - (3)].tr).n, 14);
             (yyval.tr).tipo = tipos[0]; 
             (yyval.tr).numerico = (yyvsp[(1) - (3)].tr).numerico == (yyvsp[(3) - (3)].tr).numerico;
         }
         //IGUAL_IGUAL de numericoDecimal == numericoDecimal
         else if (strcmp((yyvsp[(1) - (3)].tr).tipo, tipos[1]) == 0 && strcmp((yyvsp[(3) - (3)].tr).tipo, tipos[1]) == 0){  //comprobacion del tipo
-            printf("> [OPERACION] - IGUAL_IGUAL {numericoDecimal / numericoDecimal}\n");
+            printf("> --logic--> IGUALDAD {numericoDecimal / numericoDecimal}\n");
             (yyval.tr).n = crearNodoNoTerminal((yyvsp[(1) - (3)].tr).n, (yyvsp[(3) - (3)].tr).n, 14);
             (yyval.tr).tipo = tipos[1]; 
             (yyval.tr).numericoDecimal = (yyvsp[(1) - (3)].tr).numericoDecimal == (yyvsp[(3) - (3)].tr).numericoDecimal;
         }
         // Control de errores
         else{
-            yyerror("*** ERROR en la operacion IGUAL IGUAL ***");
-            printf("Error en la linea %d\n", num_linea);
+            yyerror("*** Ha ocurrido un ERROR en IGUAL IGUAL ***");
+            printf("Linea de ERROR: %d\n", num_linea);
         }
     ;}
     break;
@@ -1882,29 +1882,29 @@ yyreduce:
         
         //NO_IGUAL de numerico != numerico
         if (strcmp((yyvsp[(1) - (3)].tr).tipo, tipos[0]) == 0 && strcmp((yyvsp[(3) - (3)].tr).tipo, tipos[0]) == 0) {  //comprobacion del tipo
-            printf("> [OPERACION] - NO_IGUAL {numerico / numerico}\n");
+            printf("> --logic--> NO_IGUAL {numerico / numerico}\n");
             (yyval.tr).n = crearNodoNoTerminal((yyvsp[(1) - (3)].tr).n, (yyvsp[(3) - (3)].tr).n, 15);
             (yyval.tr).tipo = tipos[0]; 
             (yyval.tr).numerico = (yyvsp[(1) - (3)].tr).numerico != (yyvsp[(3) - (3)].tr).numerico;
         }
         //NO_IGUAL de numericoDecimal != numericoDecimal
         else if (strcmp((yyvsp[(1) - (3)].tr).tipo, tipos[1]) == 0 && strcmp((yyvsp[(3) - (3)].tr).tipo, tipos[1]) == 0){  //comprobacion del tipo
-            printf("> [OPERACION] - NO_IGUAL {numericoDecimal / numericoDecimal}\n");
+            printf("> --logic--> NO_IGUAL {numericoDecimal / numericoDecimal}\n");
             (yyval.tr).n = crearNodoNoTerminal((yyvsp[(1) - (3)].tr).n, (yyvsp[(3) - (3)].tr).n, 15);
             (yyval.tr).tipo = tipos[1]; 
             (yyval.tr).numericoDecimal = (yyvsp[(1) - (3)].tr).numericoDecimal != (yyvsp[(3) - (3)].tr).numericoDecimal;
         }
         //NO_IGUAL de string != string (texto)
         else if (strcmp((yyvsp[(1) - (3)].tr).tipo, tipos[2]) == 0 && strcmp((yyvsp[(3) - (3)].tr).tipo, tipos[2]) == 0){  //comprobacion del tipo
-            printf("> [OPERACION] - NO_IGUAL {texto / texto}\n");
+            printf("> --logic--> NO_IGUAL {texto / texto}\n");
             (yyval.tr).n = crearNodoNoTerminal((yyvsp[(1) - (3)].tr).n, (yyvsp[(3) - (3)].tr).n, 15);
             (yyval.tr).tipo = tipos[2]; 
             (yyval.tr).texto = (yyvsp[(1) - (3)].tr).texto != (yyvsp[(3) - (3)].tr).texto;
         }
         // Control de errores
         else{
-            yyerror("*** ERROR en la operacion DISTINTO DE ***");
-            printf("Error en la linea %d\n", num_linea);
+            yyerror("*** Ha ocurrido un ERROR en DISTINTO DE ***");
+            printf("Linea de ERROR: %d\n", num_linea);
         }
     ;}
     break;
@@ -1917,13 +1917,13 @@ yyreduce:
             
             //AND de numerico > numerico
             if (strcmp((yyvsp[(1) - (3)].tr).tipo, tipos[0]) == 0 && strcmp((yyvsp[(3) - (3)].tr).tipo, tipos[0]) == 0) {  //comprobacion del tipo
-                printf("> [OPERACION] - AND {numerico / numerico}\n");
+                printf("> --logic--> AND {numerico / numerico}\n");
                 (yyval.tr).n = crearNodoNoTerminal((yyvsp[(1) - (3)].tr).n, (yyvsp[(3) - (3)].tr).n, 16);
                 (yyval.tr).tipo = tipos[0]; (yyval.tr).numerico = (yyvsp[(1) - (3)].tr).numerico && (yyvsp[(3) - (3)].tr).numerico;
             }
             //AND de numericoDecimal > numericoDecimal
             else if (strcmp((yyvsp[(1) - (3)].tr).tipo, tipos[1]) == 0 && strcmp((yyvsp[(3) - (3)].tr).tipo, tipos[1]) == 0){  //comprobacion del tipo
-                printf("> [OPERACION] - AND {numericoDecimal / numericoDecimal}\n");
+                printf("> --logic--> AND {numericoDecimal / numericoDecimal}\n");
                 (yyval.tr).n = crearNodoNoTerminal((yyvsp[(1) - (3)].tr).n, (yyvsp[(3) - (3)].tr).n, 16);
                 (yyval.tr).tipo = tipos[1]; (yyval.tr).numericoDecimal = (yyvsp[(1) - (3)].tr).numericoDecimal && (yyvsp[(3) - (3)].tr).numericoDecimal;
             }
@@ -1940,14 +1940,14 @@ yyreduce:
             
             //OR de numerico > numerico
             if (strcmp((yyvsp[(1) - (3)].tr).tipo, tipos[0]) == 0 && strcmp((yyvsp[(3) - (3)].tr).tipo, tipos[0]) == 0) {  //comprobacion del tipo
-                printf("> [OPERACION] - OR {numerico / numerico}\n");
+                printf("> --logic--> OR {numerico / numerico}\n");
                 (yyval.tr).n = crearNodoNoTerminal((yyvsp[(1) - (3)].tr).n, (yyvsp[(3) - (3)].tr).n, 17);
                 (yyval.tr).tipo = tipos[0]; 
                 (yyval.tr).numerico = (yyvsp[(1) - (3)].tr).numerico || (yyvsp[(3) - (3)].tr).numerico;
             }
             //OR de numericoDecimal > numericoDecimal
             else if (strcmp((yyvsp[(1) - (3)].tr).tipo, tipos[1]) == 0 && strcmp((yyvsp[(3) - (3)].tr).tipo, tipos[1]) == 0){  //comprobacion del tipo
-                printf("> [OPERACION] - OR {numericoDecimal / numericoDecimal}\n");
+                printf("> --logic--> OR {numericoDecimal / numericoDecimal}\n");
                 (yyval.tr).n = crearNodoNoTerminal((yyvsp[(1) - (3)].tr).n, (yyvsp[(3) - (3)].tr).n, 17);
                 (yyval.tr).tipo = tipos[1]; (yyval.tr).numericoDecimal = (yyvsp[(1) - (3)].tr).numericoDecimal || (yyvsp[(3) - (3)].tr).numericoDecimal;
             }
@@ -1959,7 +1959,7 @@ yyreduce:
 /* Line 1464 of yacc.c  */
 #line 484 "src/pyBis.y"
     {
-        printf("> [OPERACION] - GUARDAR POSICION DEL ARRAY \n");
+        printf("> --logic--> GUARDAR POSICION DEL ARRAY \n");
         int pos = buscarTabla(indice, (yyvsp[(1) - (4)].stringVal), tabla);
         printf("Posicion encontrada en la tabla : %d con el nombre de %s\n", pos, tabla[pos].nombre);
         // int *arrayEncontrado = tabla[pos].arrayNumerico;
@@ -1975,11 +1975,11 @@ yyreduce:
 /* Line 1464 of yacc.c  */
 #line 497 "src/pyBis.y"
     {
-        printf("> [OPERACION] - ARRAY \n");
+        printf("> --logic--> - ARRAY \n");
         arrays[array_count].valores = (yyvsp[(2) - (3)].valores);
         arrays[array_count].size = (yyvsp[(2) - (3)].valores)[0];
 
-        printf("Array detectado de tamanio %d\n", (yyvsp[(2) - (3)].valores)[0]);
+        printf("Array de tamanio %d\n", (yyvsp[(2) - (3)].valores)[0]);
         for (int i = 1; i <= (yyvsp[(2) - (3)].valores)[0]; i++) {
             printf("%d ", (yyvsp[(2) - (3)].valores)[i]);
         }
@@ -2028,7 +2028,7 @@ yyreduce:
 /* Line 1464 of yacc.c  */
 #line 546 "src/pyBis.y"
     {
-        printf(" IDENTIFICADOR %s\n",(yyvsp[(1) - (1)].stringVal));
+        printf(" <-- IDENTIFICADOR %s\n",(yyvsp[(1) - (1)].stringVal));
         //Buscamos en la tabla el identificador
         if(buscarTabla(indice, (yyvsp[(1) - (1)].stringVal), tabla) != -1){     //En este IF entra si buscarTabla devuelve la posicion
             int pos = buscarTabla(indice, (yyvsp[(1) - (1)].stringVal), tabla);
@@ -2050,7 +2050,6 @@ yyreduce:
             }
             //Para si es de tipo array
             else if (tabla[pos].tipo==tipos[4]){
-                printf("Encuentra los ids de tipo array\n");
                 (yyval.tr).tipo = tabla[pos].tipo;
                 (yyval.tr).n = crearVariableTerminalArray(tabla[pos].arrayNumerico, tabla[pos].registro, tabla[pos].tipo); //Creamos un nodo terminal con las cadenas{
             }
@@ -2061,10 +2060,10 @@ yyreduce:
   case 29:
 
 /* Line 1464 of yacc.c  */
-#line 577 "src/pyBis.y"
+#line 576 "src/pyBis.y"
     {
         (yyval.tr).numerico = (yyvsp[(1) - (1)].enteroVal);
-        printf("\n> [TIPO] - Numerico Positivo: %d\n", (yyval.tr).numerico);
+        printf("\n> Tipo int: %d\n", (yyval.tr).numerico);
         
         (yyval.tr).tipo = tipos[0];
 
@@ -2076,10 +2075,10 @@ yyreduce:
   case 30:
 
 /* Line 1464 of yacc.c  */
-#line 588 "src/pyBis.y"
+#line 587 "src/pyBis.y"
     {
         (yyval.tr).numericoDecimal = (yyvsp[(1) - (1)].realVal);
-        printf("\n> [TIPO] - NumericoDecimal: %.3f\n", (yyval.tr).numericoDecimal); 
+        printf("\n> Tipo double: %.3f\n", (yyval.tr).numericoDecimal); 
 
         (yyval.tr).tipo = tipos[1];
 
@@ -2090,10 +2089,10 @@ yyreduce:
   case 31:
 
 /* Line 1464 of yacc.c  */
-#line 598 "src/pyBis.y"
+#line 597 "src/pyBis.y"
     {
         (yyval.tr).texto = (yyvsp[(1) - (1)].cadenaVal);
-        printf("\n> [TIPO] - Cadena de texto: %s\n", (yyvsp[(1) - (1)].cadenaVal));
+        printf("\n> Tipo String: %s\n", (yyvsp[(1) - (1)].cadenaVal));
 
         (yyval.tr).tipo = tipos[2];
 
@@ -2104,9 +2103,9 @@ yyreduce:
   case 32:
 
 /* Line 1464 of yacc.c  */
-#line 612 "src/pyBis.y"
+#line 611 "src/pyBis.y"
     { 
-        printf("> [SENTENCIA] - Imprimir\n");
+        printf(">  Funcion Imprimir \n");
 
         (yyval.tr).n = crearNodoNoTerminal((yyvsp[(3) - (4)].tr).n, crearNodoVacio(), 4);
 
@@ -2127,9 +2126,9 @@ yyreduce:
   case 33:
 
 /* Line 1464 of yacc.c  */
-#line 636 "src/pyBis.y"
+#line 635 "src/pyBis.y"
     {
-        printf("> [SENTENCIA] - Bucle While\n");
+        printf("> Bucle While\n");
         (yyval.tr).n = crearNodoNoTerminal((yyvsp[(3) - (7)].tr).n, (yyvsp[(6) - (7)].tr).n, 21); // 21 es el numero del while
     ;}
     break;
@@ -2137,9 +2136,9 @@ yyreduce:
   case 34:
 
 /* Line 1464 of yacc.c  */
-#line 647 "src/pyBis.y"
+#line 646 "src/pyBis.y"
     {
-        printf("> [SENTENCIA] - Bucle For\n");
+        printf("> Bucle For\n");
         (yyval.tr).n = crearNodoNoTerminal((yyvsp[(6) - (10)].tr).n, (yyvsp[(9) - (10)].tr).n, 22); // 22 es el numero del for
     ;}
     break;
@@ -2147,9 +2146,9 @@ yyreduce:
   case 35:
 
 /* Line 1464 of yacc.c  */
-#line 658 "src/pyBis.y"
+#line 657 "src/pyBis.y"
     {
-        printf("> [SENTENCIA] - Condicion If\n");
+        printf("> Condicional If\n");
         if((yyvsp[(3) - (9)].tr).numerico == 1){
             (yyval.tr).n = crearNodoNoTerminal((yyvsp[(6) - (9)].tr).n, crearNodoVacio(), 7); // 7 is the number for if
         } else if ((yyvsp[(7) - (9)].tr).numerico == 1) {
@@ -2163,7 +2162,7 @@ yyreduce:
   case 36:
 
 /* Line 1464 of yacc.c  */
-#line 671 "src/pyBis.y"
+#line 670 "src/pyBis.y"
     {
         (yyval.tr).numerico = 0;
     ;}
@@ -2172,9 +2171,9 @@ yyreduce:
   case 37:
 
 /* Line 1464 of yacc.c  */
-#line 674 "src/pyBis.y"
+#line 673 "src/pyBis.y"
     {
-        printf("> [SENTENCIA] - Condicion Elif\n");
+        printf("> Condicional Elif\n");
         if((yyvsp[(4) - (7)].tr).numerico == 1){
             (yyval.tr).numerico = 1;
             (yyval.tr).n = crearNodoNoTerminal((yyvsp[(7) - (7)].tr).n, crearNodoVacio(), 7); // 7 is the number for elif
@@ -2185,7 +2184,7 @@ yyreduce:
   case 38:
 
 /* Line 1464 of yacc.c  */
-#line 684 "src/pyBis.y"
+#line 683 "src/pyBis.y"
     {
         (yyval.tr).n = (yyvsp[(3) - (3)].tr).n;
     ;}
@@ -2194,7 +2193,7 @@ yyreduce:
   case 39:
 
 /* Line 1464 of yacc.c  */
-#line 687 "src/pyBis.y"
+#line 686 "src/pyBis.y"
     {
         (yyval.tr).n = crearNodoVacio();
     ;}
@@ -2203,7 +2202,7 @@ yyreduce:
 
 
 /* Line 1464 of yacc.c  */
-#line 2207 "src/pyBis.c"
+#line 2206 "src/pyBis.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -2415,7 +2414,7 @@ yyreturn:
 
 
 /* Line 1684 of yacc.c  */
-#line 696 "src/pyBis.y"
+#line 695 "src/pyBis.y"
  
 
 //--------------------------------------------------- METODO MAIN -----------------------------------------------
@@ -2433,6 +2432,6 @@ int main(int argc, char** argv) {
 //Metodo yyerror, generado por defecto
 void yyerror(const char* s) {
     fprintf(stderr, "\n--------------------------------------------------------\n");
-    fprintf(stderr, "Error en la linea %d: %s", num_linea, s);
+    fprintf(stderr, "Linea de ERROR: %d: %s", num_linea, s);
     fprintf(stderr, "\n--------------------------------------------------------\n\n");
 }
