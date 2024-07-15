@@ -39,8 +39,8 @@ int num_linea = 1;
 "]"                                             return CIERRECORCHETE;
 ","                                             return COMA;
 print                                           return IMPRIMIR;
-[0-9]+                                          {yylval.enteroVal = atoi(yytext); return NUMERICO;}
-[0-9]+.[0-9]+                                   {yylval.realVal   = atof(yytext); return NUMERICODECIMAL;}
+[-]?[0-9]+                                          {yylval.enteroVal = atoi(yytext); return NUMERICO;}
+[-]?[0-9]+.[0-9]+                                   {yylval.realVal   = atof(yytext); return NUMERICODECIMAL;}
 _?[a-zA-Z0-9_]+		                            {yylval.stringVal = strdup(yytext); return IDENTIFICADOR;}
 \"[^\"\n]*\"                                    {yylval.stringVal = strdup(yytext + 1); yylval.stringVal[strlen(yylval.stringVal) - 1] = '\0'; printf(yytext);return CADENA;}
 \n                                              { printf("\n--------------- Linea de codigo %d ----------------\n\n", num_linea); num_linea++;}

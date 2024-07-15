@@ -694,12 +694,49 @@ else_clause:
 
 %% 
 
-//--------------------------------------------------- METODO MAIN -----------------------------------------------
+//------------------------------- METODO MAIN ---------------------------
 int main(int argc, char** argv) {
-    yyin = fopen(argv[1], "rt");            //Apertura del archivo codigo.python
-    yyout = fopen( "test/python.asm", "wt" );  //Para el archivo .ASM con nombre "python.asm"
-	yyparse();
+    if(argc < 2) {
+        fprintf(stderr, "Uso: %s <archivo de entrada>\n", argv[0]);
+        return 1;
+    }
+    
+    yyin = fopen(argv[1], "rt"); // Apertura del archivo codigo.py
+    if(yyin == NULL) {
+        perror("Error al abrir el archivo de entrada");
+        return 1;
+    }
+
+    char* input_filename = argv[1];
+    char* output_filename = malloc(strlen(input_filename) + 4); // Suficiente espacio para cambiar la extensión
+    if(output_filename == NULL) {
+        perror("Error al asignar memoria");
+        fclose(yyin);
+        return 1;
+    }
+
+    strcpy(output_filename, input_filename);
+    char* dot = strrchr(output_filename, '.');
+    if(dot != NULL) {
+        strcpy(dot, ".asm");
+    } else {
+        strcat(output_filename, ".asm");
+    }
+
+    yyout = fopen(output_filename, "wt");  // Para el archivo .ASM
+    if(yyout == NULL) {
+        perror("Error al abrir el archivo de salida");
+        free(output_filename);
+        fclose(yyin);
+        return 1;
+    }
+
+    yyparse();
+
     fclose(yyin);
+    fclose(yyout);
+    free(output_filename);
+
     return 0;
 }
 
