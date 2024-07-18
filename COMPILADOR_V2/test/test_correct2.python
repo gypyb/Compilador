@@ -1,0 +1,5 @@
+a = 4
+while (a == 4):
+    print("no es cinco")
+    verdad = verdad + 1
+fin_bucle
