@@ -1,0 +1,4 @@
+Hola = "hola"
+mundo = "mundo"
+hola_mundo = Hola + mundo
+print(hola_mundo)

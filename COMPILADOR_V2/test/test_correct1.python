@@ -1,9 +1,7 @@
-# test_correct1.py
-# Este programa debe calcular la suma de dos números y verificar condiciones.
+# Test
 a = 5
-suma = 10 + a
-if (suma > 7):
-    print("mayor")
+if (a > 7):
+    print("")
 else:
     print("menor")
 finIf
